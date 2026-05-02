@@ -1,230 +1,231 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>La Dolores – Cocina</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="theme-color" content="#0F0C07">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 :root{
-–ink:#0F0C07;–ink2:#181208;–ink3:#211A0C;–ink4:#2A2010;
-–cream:#F0E6CC;–cream2:#D8CEB4;–muted:#7A6A50;
-–border:#FFFFFF14;–border2:#FFFFFF09;
-–amber:#C07A10;–amber2:#D4940A;
-–rust:#8B2E0F;–rust2:#B04020;
-–olive:#3A4E1E;–olive2:#536E2A;
-–gold:#C9A84C;–gold2:#E0C060;
-–ice:#1A3A5C;–ice2:#2A5A8C;–ice3:#5AAAE0;
-–night:#3D2A7A;–night2:#5540AA;
-–tab-h:56px;
+  --ink:#0F0C07;--ink2:#181208;--ink3:#211A0C;--ink4:#2A2010;
+  --cream:#F0E6CC;--cream2:#D8CEB4;--muted:#7A6A50;
+  --border:#FFFFFF14;--border2:#FFFFFF09;
+  --amber:#C07A10;--amber2:#D4940A;
+  --rust:#8B2E0F;--rust2:#B04020;
+  --olive:#3A4E1E;--olive2:#536E2A;
+  --gold:#C9A84C;--gold2:#E0C060;
+  --ice:#1A3A5C;--ice2:#2A5A8C;--ice3:#5AAAE0;
+  --night:#3D2A7A;--night2:#5540AA;
+  --tab-h:56px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overscroll-behavior:none;}
-body{background:var(–ink);color:var(–cream);font-family:‘DM Sans’,sans-serif;font-size:14px;min-height:100vh;}
+body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;}
 
 /* ── SYNC BAR ── */
-#sync-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;padding:9px 16px;text-align:center;font-family:‘DM Mono’,monospace;font-size:10px;letter-spacing:1px;color:white;}
+#sync-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;padding:9px 16px;text-align:center;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:white;}
 
 /* ── TABS ── */
-.tab-bar{display:flex;background:var(–ink2);border-bottom:1px solid var(–border);position:sticky;top:0;z-index:300;}
-.tab{flex:1;height:var(–tab-h);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;
-font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;
-color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;user-select:none;}
+.tab-bar{display:flex;background:var(--ink2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:300;}
+.tab{flex:1;height:var(--tab-h);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;
+  font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;user-select:none;}
 .tab .ti{font-size:15px;}
-.tab.active{color:var(–gold);border-bottom-color:var(–gold);background:#FFFFFF04;}
-.tab:hover:not(.active){color:var(–cream);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);background:#FFFFFF04;}
+.tab:hover:not(.active){color:var(--cream);}
 
 /* ── WHO BAR ── */
-.who-bar{background:var(–ink3);border-bottom:1px solid var(–border);padding:7px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:var(–tab-h);z-index:200;}
-.who-label{font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:2px;color:var(–muted);text-transform:uppercase;white-space:nowrap;}
+.who-bar{background:var(--ink3);border-bottom:1px solid var(--border);padding:7px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:var(--tab-h);z-index:200;}
+.who-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap;}
 .who-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
-.chip{font-family:‘DM Mono’,monospace;font-size:9px;padding:3px 10px;border-radius:20px;border:1px solid var(–border);color:var(–muted);cursor:pointer;transition:all .15s;user-select:none;white-space:nowrap;}
-.chip:hover{border-color:var(–gold);color:var(–cream);}
-.chip.sel{background:var(–gold);border-color:var(–gold);color:var(–ink);font-weight:600;}
+.chip{font-family:'DM Mono',monospace;font-size:9px;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;user-select:none;white-space:nowrap;}
+.chip:hover{border-color:var(--gold);color:var(--cream);}
+.chip.sel{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:600;}
 
 /* ── PAGES ── */
 .page{display:none;padding-bottom:80px;}
 .page.active{display:block;}
 
 /* ── PAGE HEADER ── */
-.ph{padding:14px 14px 10px;border-bottom:1px solid var(–border);display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(–ink3);}
-.ph-title{font-family:‘Cormorant Garamond’,serif;font-size:20px;font-weight:700;line-height:1;}
-.ph-sub{font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:2px;color:var(–gold);text-transform:uppercase;margin-top:3px;}
-.dpill{color:white;font-family:‘DM Mono’,monospace;font-size:8px;letter-spacing:1px;padding:4px 9px;border-radius:2px;white-space:nowrap;}
-.dpill.amber{background:var(–amber);}
-.dpill.ice{background:var(–ice2);}
-.dpill.night{background:var(–night);}
-.dpill.olive{background:var(–olive);}
+.ph{padding:14px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--ink3);}
+.ph-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;line-height:1;}
+.ph-sub{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-top:3px;}
+.dpill{color:white;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;padding:4px 9px;border-radius:2px;white-space:nowrap;}
+.dpill.amber{background:var(--amber);}
+.dpill.ice{background:var(--ice2);}
+.dpill.night{background:var(--night);}
+.dpill.olive{background:var(--olive);}
 
 /* ── PROGRESS ── */
-.prog{padding:7px 12px;background:var(–ink2);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(–border);font-family:‘DM Mono’,monospace;font-size:7px;color:var(–muted);letter-spacing:1px;}
+.prog{padding:7px 12px;background:var(--ink2);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px;}
 .pbo{flex:1;background:#FFFFFF18;border-radius:2px;height:3px;}
-.pbi{height:100%;border-radius:2px;transition:width .35s;background:var(–gold);}
-.pc{color:var(–gold);white-space:nowrap;}
+.pbi{height:100%;border-radius:2px;transition:width .35s;background:var(--gold);}
+.pc{color:var(--gold);white-space:nowrap;}
 
 /* ── SEARCH BAR ── */
-.search-wrap{padding:10px 12px;background:var(–ink2);border-bottom:1px solid var(–border);display:flex;gap:8px;align-items:center;}
-.search-inp{flex:1;background:var(–ink3);border:1px solid var(–border);color:var(–cream);font-family:‘DM Sans’,sans-serif;font-size:13px;padding:8px 12px;border-radius:20px;outline:none;}
-.search-inp:focus{border-color:var(–gold);}
-.search-inp::placeholder{color:var(–muted);}
-.btn-add-manual{background:var(–amber);color:white;border:none;border-radius:20px;padding:8px 14px;font-family:‘DM Mono’,monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
-.btn-add-manual:hover{background:var(–amber2);}
+.search-wrap{padding:10px 12px;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;}
+.search-inp{flex:1;background:var(--ink3);border:1px solid var(--border);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 12px;border-radius:20px;outline:none;}
+.search-inp:focus{border-color:var(--gold);}
+.search-inp::placeholder{color:var(--muted);}
+.btn-add-manual{background:var(--amber);color:white;border:none;border-radius:20px;padding:8px 14px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
+.btn-add-manual:hover{background:var(--amber2);}
 
 /* ── SECTIONS ── */
 .secs{padding:10px;display:flex;flex-direction:column;gap:8px;max-width:960px;margin:0 auto;}
-.sc{background:var(–ink3);border:1px solid var(–border);border-radius:3px;overflow:hidden;}
-.sch{padding:9px 13px;display:flex;align-items:center;gap:8px;cursor:pointer;border-bottom:1px solid var(–border);background:#FFFFFF03;user-select:none;transition:background .15s;}
+.sc{background:var(--ink3);border:1px solid var(--border);border-radius:3px;overflow:hidden;}
+.sch{padding:9px 13px;display:flex;align-items:center;gap:8px;cursor:pointer;border-bottom:1px solid var(--border);background:#FFFFFF03;user-select:none;transition:background .15s;}
 .sch:hover{background:#FFFFFF07;}
-.si{font-size:15px;}.st{font-family:‘Cormorant Garamond’,serif;font-size:15px;font-weight:600;flex:1;}
-.sb{font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:1px;padding:2px 6px;border-radius:2px;background:var(–amber);color:white;}
-.sb.full{background:var(–olive2);}.sb.ice{background:var(–ice2);}
-.schev{color:var(–gold);font-size:10px;transition:transform .2s;}
+.si{font-size:15px;}.st{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;flex:1;}
+.sb{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;padding:2px 6px;border-radius:2px;background:var(--amber);color:white;}
+.sb.full{background:var(--olive2);}.sb.ice{background:var(--ice2);}
+.schev{color:var(--gold);font-size:10px;transition:transform .2s;}
 .sc.col .schev{transform:rotate(-90deg);}
 .sc.col .scb{display:none;}
 
 /* ── TAGS ── */
 .tag{display:inline-block;padding:1px 5px;border-radius:2px;font-size:7px;letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-right:3px;vertical-align:middle;}
-.tgs{background:#C07A1020;color:var(–amber);}
-.tgd{background:#3A4E1E20;color:var(–olive2);}
+.tgs{background:#C07A1020;color:var(--amber);}
+.tgd{background:#3A4E1E20;color:var(--olive2);}
 .tgsv{background:#8B2E0F20;color:#D05030;}
 
 /* ── INPUTS ── */
-.inp{width:100%;background:var(–ink);border:1px solid var(–border);color:var(–cream);font-family:‘DM Mono’,monospace;font-size:12px;padding:6px 8px;border-radius:2px;outline:none;}
-.inp:focus{border-color:var(–gold);}
+.inp{width:100%;background:var(--ink);border:1px solid var(--border);color:var(--cream);font-family:'DM Mono',monospace;font-size:12px;padding:6px 8px;border-radius:2px;outline:none;}
+.inp:focus{border-color:var(--gold);}
 .ta{resize:none;min-height:40px;font-size:10px;line-height:1.5;}
 .qi{width:50px;height:27px;text-align:center;font-size:12px;}
-.qi.hv{border-color:var(–amber);color:var(–gold);}
+.qi.hv{border-color:var(--amber);color:var(--gold);}
 
 /* ── BUTTONS ── */
-.btn{font-family:‘DM Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 12px;border-radius:2px;border:none;cursor:pointer;transition:all .15s;white-space:nowrap;}
-.bsave{background:var(–olive);color:white;}.bsave:hover{background:var(–olive2);}
-.bprint{background:var(–ink);border:1px solid var(–gold);color:var(–gold);}.bprint:hover{background:var(–gold);color:var(–ink);}
-.bdone{background:var(–amber);color:white;}.bdone:hover{background:var(–amber2);}
-.bdone.isdone{background:var(–olive2);}
-.bice{background:var(–ice);color:white;}.bice:hover{background:var(–ice2);}
-.bexp{background:var(–gold);color:var(–ink);font-weight:600;}.bexp:hover{background:var(–amber2);color:white;}
-.bdanger{background:var(–rust);color:white;}.bdanger:hover{opacity:.85;}
-.bnight{background:var(–night);color:white;}.bnight:hover{background:var(–night2);}
+.btn{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 12px;border-radius:2px;border:none;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.bsave{background:var(--olive);color:white;}.bsave:hover{background:var(--olive2);}
+.bprint{background:var(--ink);border:1px solid var(--gold);color:var(--gold);}.bprint:hover{background:var(--gold);color:var(--ink);}
+.bdone{background:var(--amber);color:white;}.bdone:hover{background:var(--amber2);}
+.bdone.isdone{background:var(--olive2);}
+.bice{background:var(--ice);color:white;}.bice:hover{background:var(--ice2);}
+.bexp{background:var(--gold);color:var(--ink);font-weight:600;}.bexp:hover{background:var(--amber2);color:white;}
+.bdanger{background:var(--rust);color:white;}.bdanger:hover{opacity:.85;}
+.bnight{background:var(--night);color:white;}.bnight:hover{background:var(--night2);}
 .bsm{padding:4px 8px;font-size:7px;}
 
 /* ── CIERRE ITEMS ── */
-.ci-item{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 13px;border-bottom:1px solid var(–border2);align-items:start;}
+.ci-item{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 13px;border-bottom:1px solid var(--border2);align-items:start;}
 .ci-item:last-child{border-bottom:none;}
 .ci-name{font-weight:500;font-size:13px;margin-bottom:2px;}
-.ci-det{font-family:‘DM Mono’,monospace;font-size:8px;color:var(–muted);line-height:1.5;}
+.ci-det{font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);line-height:1.5;}
 .ci-right{display:flex;flex-direction:column;gap:3px;align-items:flex-end;}
-.ci-ql{font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:1px;color:var(–muted);text-transform:uppercase;text-align:right;}
+.ci-ql{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;text-align:right;}
 .ci-note-row{padding:0 13px 8px;}
 .ci-who-row{padding:0 13px 4px;display:flex;align-items:center;gap:7px;}
-.ci-who-lbl{font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:1px;color:var(–muted);text-transform:uppercase;white-space:nowrap;}
+.ci-who-lbl{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;white-space:nowrap;}
 
 /* ── DESC ITEMS ── */
-.di{display:grid;grid-template-columns:1fr auto auto;gap:8px;padding:10px 13px;border-bottom:1px solid var(–border2);align-items:center;}
+.di{display:grid;grid-template-columns:1fr auto auto;gap:8px;padding:10px 13px;border-bottom:1px solid var(--border2);align-items:center;}
 .di:last-child{border-bottom:none;}
 .di-name{font-weight:500;font-size:13px;}
-.di-det{font-family:‘DM Mono’,monospace;font-size:8px;color:var(–muted);margin-top:1px;}
+.di-det{font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);margin-top:1px;}
 .di-qty-col{display:flex;flex-direction:column;gap:2px;align-items:flex-end;}
-.di-ql{font-family:‘DM Mono’,monospace;font-size:7px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;}
-.di-chk{width:24px;height:24px;background:var(–ink);border:2px solid var(–border);border-radius:2px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:12px;color:transparent;flex-shrink:0;}
-.di-chk.on{background:var(–ice);border-color:var(–ice3);color:var(–ice3);}
+.di-ql{font-family:'DM Mono',monospace;font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.di-chk{width:24px;height:24px;background:var(--ink);border:2px solid var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:12px;color:transparent;flex-shrink:0;}
+.di-chk.on{background:var(--ice);border-color:var(--ice3);color:var(--ice3);}
 .di-who-row{padding:0 13px 4px;display:flex;gap:7px;align-items:center;}
 .di-note-row{padding:0 13px 8px;}
 
 /* ── PROD ITEMS ── */
-.pi{padding:12px 13px;border-bottom:1px solid var(–border2);}
+.pi{padding:12px 13px;border-bottom:1px solid var(--border2);}
 .pi:last-child{border-bottom:none;}
 .pi.dim{opacity:.25;}
 .pi.donebg{background:#3A4E1E08;}
 .pi-head{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
-.pdot{width:6px;height:6px;border-radius:50%;background:var(–muted);flex-shrink:0;}
-.pdot.enc{background:var(–amber);}
-.pdot.done{background:var(–olive2);}
+.pdot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+.pdot.enc{background:var(--amber);}
+.pdot.done{background:var(--olive2);}
 .pi-name{font-weight:600;font-size:13px;flex:1;}
-.pi-enc{font-family:‘DM Mono’,monospace;font-size:7px;background:var(–rust);color:white;padding:2px 6px;border-radius:2px;}
-.pi-enc.z{background:#2A2010;color:var(–muted);}
-.note-banner{font-size:9px;color:var(–amber);margin-bottom:7px;font-family:‘DM Mono’,monospace;padding:3px 7px;background:#C07A1012;border-left:2px solid var(–amber);border-radius:1px;}
+.pi-enc{font-family:'DM Mono',monospace;font-size:7px;background:var(--rust);color:white;padding:2px 6px;border-radius:2px;}
+.pi-enc.z{background:#2A2010;color:var(--muted);}
+.note-banner{font-size:9px;color:var(--amber);margin-bottom:7px;font-family:'DM Mono',monospace;padding:3px 7px;background:#C07A1012;border-left:2px solid var(--amber);border-radius:1px;}
 .pi-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-bottom:9px;}
-.pf label{display:block;font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:1px;color:var(–muted);margin-bottom:2px;text-transform:uppercase;}
+.pf label{display:block;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--muted);margin-bottom:2px;text-transform:uppercase;}
 .pf.wide{grid-column:1/-1;}
 .pi-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
-.done-stamp{font-family:‘DM Mono’,monospace;font-size:7px;color:var(–olive2);letter-spacing:1px;}
+.done-stamp{font-family:'DM Mono',monospace;font-size:7px;color:var(--olive2);letter-spacing:1px;}
 
 /* ── FICHAS TÉCNICAS ── */
 .fichas-grid{padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;max-width:960px;margin:0 auto;}
-.ficha-card{background:var(–ink3);border:1px solid var(–border);border-radius:3px;overflow:hidden;cursor:pointer;transition:border-color .2s;}
-.ficha-card:hover{border-color:var(–gold);}
-.ficha-card-head{padding:12px 13px;border-bottom:1px solid var(–border);display:flex;align-items:center;gap:9px;}
+.ficha-card{background:var(--ink3);border:1px solid var(--border);border-radius:3px;overflow:hidden;cursor:pointer;transition:border-color .2s;}
+.ficha-card:hover{border-color:var(--gold);}
+.ficha-card-head{padding:12px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;}
 .ficha-icon{font-size:20px;}
-.ficha-name{font-family:‘Cormorant Garamond’,serif;font-size:15px;font-weight:600;flex:1;}
-.ficha-badge{font-family:‘DM Mono’,monospace;font-size:7px;padding:2px 6px;border-radius:2px;background:var(–amber);color:white;}
-.ficha-body{padding:12px 13px;font-size:12px;line-height:1.7;color:var(–cream2);}
+.ficha-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;flex:1;}
+.ficha-badge{font-family:'DM Mono',monospace;font-size:7px;padding:2px 6px;border-radius:2px;background:var(--amber);color:white;}
+.ficha-body{padding:12px 13px;font-size:12px;line-height:1.7;color:var(--cream2);}
 .ficha-section{margin-bottom:10px;}
-.ficha-section-title{font-family:‘DM Mono’,monospace;font-size:8px;letter-spacing:2px;color:var(–gold);text-transform:uppercase;margin-bottom:5px;}
-.ficha-ing-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(–border2);font-size:11px;}
+.ficha-section-title{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:5px;}
+.ficha-ing-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border2);font-size:11px;}
 .ficha-ing-row:last-child{border-bottom:none;}
-.ficha-ing-name{color:var(–cream);}
-.ficha-ing-qty{color:var(–gold);font-family:‘DM Mono’,monospace;font-size:10px;}
+.ficha-ing-name{color:var(--cream);}
+.ficha-ing-qty{color:var(--gold);font-family:'DM Mono',monospace;font-size:10px;}
 .ficha-step{display:flex;gap:8px;margin-bottom:6px;font-size:11px;}
-.ficha-step-num{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–amber);font-weight:600;min-width:16px;}
+.ficha-step-num{font-family:'DM Mono',monospace;font-size:9px;color:var(--amber);font-weight:600;min-width:16px;}
 .ficha-allergen{display:inline-block;padding:2px 6px;border-radius:2px;font-size:8px;background:#8B2E0F22;color:#D05030;margin:2px;}
-.ficha-pdf-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:2px;background:var(–ink4);border:1px solid var(–border);color:var(–gold);font-family:‘DM Mono’,monospace;font-size:8px;letter-spacing:1px;cursor:pointer;text-decoration:none;margin-top:8px;}
-.ficha-pdf-link:hover{background:var(–gold);color:var(–ink);}
+.ficha-pdf-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:2px;background:var(--ink4);border:1px solid var(--border);color:var(--gold);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;cursor:pointer;text-decoration:none;margin-top:8px;}
+.ficha-pdf-link:hover{background:var(--gold);color:var(--ink);}
 
 /* ── PDF MODAL ── */
 .pdf-modal{display:none;position:fixed;inset:0;background:#000000EE;z-index:600;flex-direction:column;}
 .pdf-modal.open{display:flex;}
-.pdf-modal-bar{background:var(–ink2);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(–border);}
-.pdf-modal-title{font-family:‘Cormorant Garamond’,serif;font-size:16px;font-weight:600;flex:1;}
+.pdf-modal-bar{background:var(--ink2);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.pdf-modal-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;flex:1;}
 .pdf-frame{flex:1;border:none;background:white;}
 
 /* ── TABLA PESOS ── */
 .pesos-wrap{padding:12px;max-width:960px;margin:0 auto;}
 .pesos-table{width:100%;border-collapse:collapse;font-size:11px;}
-.pesos-table th{text-align:left;padding:7px 10px;background:var(–ink2);color:var(–gold);font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(–border);white-space:nowrap;}
-.pesos-table td{padding:8px 10px;border-bottom:1px solid var(–border2);color:var(–cream);vertical-align:top;font-family:‘DM Mono’,monospace;}
+.pesos-table th{text-align:left;padding:7px 10px;background:var(--ink2);color:var(--gold);font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;}
+.pesos-table td{padding:8px 10px;border-bottom:1px solid var(--border2);color:var(--cream);vertical-align:top;font-family:'DM Mono',monospace;}
 .pesos-table tr:hover td{background:#FFFFFF03;}
-.pesos-section-row td{background:var(–ink3);color:var(–gold);font-family:‘Cormorant Garamond’,serif;font-size:13px;font-weight:600;padding:6px 10px;}
-.pesos-val{color:var(–amber);}
-.pesos-uds{color:var(–ice3);}
+.pesos-section-row td{background:var(--ink3);color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;padding:6px 10px;}
+.pesos-val{color:var(--amber);}
+.pesos-uds{color:var(--ice3);}
 
 /* ── HISTORIAL ── */
-.hctl{padding:10px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(–border);background:var(–ink3);}
-.hctl input{background:var(–ink);border:1px solid var(–border);color:var(–cream);font-family:‘DM Mono’,monospace;font-size:10px;padding:5px 8px;border-radius:2px;outline:none;}
-.hctl input:focus{border-color:var(–gold);}
+.hctl{padding:10px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--ink3);}
+.hctl input{background:var(--ink);border:1px solid var(--border);color:var(--cream);font-family:'DM Mono',monospace;font-size:10px;padding:5px 8px;border-radius:2px;outline:none;}
+.hctl input:focus{border-color:var(--gold);}
 .htabs{display:flex;gap:5px;}
-.htab{font-family:‘DM Mono’,monospace;font-size:7px;letter-spacing:1px;padding:4px 9px;border-radius:2px;border:1px solid var(–border);color:var(–muted);cursor:pointer;transition:all .15s;}
-.htab.on{background:var(–gold);border-color:var(–gold);color:var(–ink);}
+.htab{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;padding:4px 9px;border-radius:2px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;}
+.htab.on{background:var(--gold);border-color:var(--gold);color:var(--ink);}
 .htw{overflow-x:auto;padding:10px;}
-.ht{width:100%;border-collapse:collapse;font-size:10px;font-family:‘DM Mono’,monospace;}
-.ht th{text-align:left;padding:6px 8px;background:var(–ink2);color:var(–gold);font-size:7px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(–border);white-space:nowrap;}
-.ht td{padding:6px 8px;border-bottom:1px solid var(–border2);color:var(–cream);vertical-align:top;}
+.ht{width:100%;border-collapse:collapse;font-size:10px;font-family:'DM Mono',monospace;}
+.ht th{text-align:left;padding:6px 8px;background:var(--ink2);color:var(--gold);font-size:7px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;}
+.ht td{padding:6px 8px;border-bottom:1px solid var(--border2);color:var(--cream);vertical-align:top;}
 .ht tr:hover td{background:#FFFFFF03;}
-.hempty{padding:40px;text-align:center;color:var(–muted);font-family:‘DM Mono’,monospace;font-size:10px;letter-spacing:2px;}
+.hempty{padding:40px;text-align:center;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;}
 
 /* ── LABEL MODAL ── */
 .lmod{display:none;position:fixed;inset:0;background:#000000CC;z-index:500;align-items:center;justify-content:center;}
 .lmod.open{display:flex;}
-.lmod-in{background:var(–ink3);border:1px solid var(–gold);border-radius:3px;padding:18px;max-width:420px;width:92%;max-height:90vh;overflow-y:auto;}
-.lmod-title{font-family:‘Cormorant Garamond’,serif;font-size:17px;font-weight:700;margin-bottom:10px;color:var(–gold);}
-.lp{background:white;color:#111;border-radius:2px;padding:10px 12px;margin-bottom:10px;font-family:‘DM Mono’,monospace;}
-.lp-logo{font-family:‘Cormorant Garamond’,serif;font-size:14px;font-weight:700;border-bottom:2px solid #111;margin-bottom:4px;padding-bottom:2px;}
+.lmod-in{background:var(--ink3);border:1px solid var(--gold);border-radius:3px;padding:18px;max-width:420px;width:92%;max-height:90vh;overflow-y:auto;}
+.lmod-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;margin-bottom:10px;color:var(--gold);}
+.lp{background:white;color:#111;border-radius:2px;padding:10px 12px;margin-bottom:10px;font-family:'DM Mono',monospace;}
+.lp-logo{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:700;border-bottom:2px solid #111;margin-bottom:4px;padding-bottom:2px;}
 .lp-prod{font-size:12px;font-weight:700;margin:4px 0 3px;text-transform:uppercase;}
 .lp-row{display:flex;justify-content:space-between;font-size:8pt;margin:1.5px 0;}
 .lp-al{font-size:7pt;color:#444;margin-top:4px;border-top:1px solid #ddd;padding-top:3px;}
 .lp-foot{font-size:6.5pt;color:#666;margin-top:2px;}
 .mactions{display:flex;gap:7px;justify-content:flex-end;}
-.bcancel{background:transparent;border:1px solid var(–border);color:var(–muted);}.bcancel:hover{border-color:var(–cream);color:var(–cream);}
+.bcancel{background:transparent;border:1px solid var(--border);color:var(--muted);}.bcancel:hover{border-color:var(--cream);color:var(--cream);}
 </style>
-
 </head>
 <body>
 
 <div id="sync-bar"></div>
 
 <!-- TABS -->
-
 <div class="tab-bar">
   <div class="tab active" onclick="showTab('cierre')" id="tab-cierre"><span class="ti">🌙</span><span>Cierre</span></div>
   <div class="tab" onclick="showTab('descongela')" id="tab-descongela"><span class="ti">🧊</span><span>Descongela</span></div>
@@ -235,14 +236,12 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- WHO BAR -->
-
 <div class="who-bar">
   <span class="who-label">Soy:</span>
   <div class="who-chips" id="who-chips"></div>
 </div>
 
 <!-- ═══════ CIERRE ═══════ -->
-
 <div class="page active" id="page-cierre">
   <div class="ph">
     <div><div class="ph-title">Orden de Producción</div><div class="ph-sub">🌙 Qué producir mañana</div></div>
@@ -255,7 +254,6 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- ═══════ DESCONGELACIÓN ═══════ -->
-
 <div class="page" id="page-descongela">
   <div class="ph">
     <div><div class="ph-title">Descongelación</div><div class="ph-sub">🧊 Sacar esta noche a cámara</div></div>
@@ -273,7 +271,6 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- ═══════ PRODUCCIÓN ═══════ -->
-
 <div class="page" id="page-produccion">
   <div class="ph">
     <div><div class="ph-title">Panel de Producción</div><div class="ph-sub">☀️ Registra lo elaborado</div></div>
@@ -292,7 +289,6 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- ═══════ FICHAS TÉCNICAS ═══════ -->
-
 <div class="page" id="page-fichas">
   <div class="ph">
     <div><div class="ph-title">Fichas Técnicas</div><div class="ph-sub">📄 Recetas y procesos</div></div>
@@ -301,7 +297,6 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- ═══════ TABLA DE PESOS ═══════ -->
-
 <div class="page" id="page-pesos">
   <div class="ph">
     <div><div class="ph-title">Pesos y Envasado</div><div class="ph-sub">⚖️ Referencia de bolsas y raciones</div></div>
@@ -310,7 +305,6 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- ═══════ HISTORIAL ═══════ -->
-
 <div class="page" id="page-historial">
   <div class="ph">
     <div><div class="ph-title">Historial</div><div class="ph-sub">📋 Registro completo</div></div>
@@ -330,7 +324,6 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- LABEL MODAL -->
-
 <div class="lmod" id="lmod">
   <div class="lmod-in">
     <div class="lmod-title">🖨 Etiqueta Brother QL</div>
@@ -343,7 +336,6 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- PDF MODAL -->
-
 <div class="pdf-modal" id="pdf-modal">
   <div class="pdf-modal-bar">
     <span class="pdf-modal-title" id="pdf-modal-title"></span>
@@ -353,7 +345,6 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <!-- ADD MANUAL MODAL -->
-
 <div class="lmod" id="add-modal">
   <div class="lmod-in" style="max-width:500px">
     <div class="lmod-title">+ Añadir elaboración</div>
@@ -379,6 +370,11 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <script>
+// ═══════════════════════════════
+// INIT ON DOM READY
+// ═══════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+
 // ═══════════════════════════════
 // CONFIG
 // ═══════════════════════════════
@@ -782,7 +778,7 @@ function initDates(){
 function renderCierre(){
   const con=document.getElementById('cierre-secs');con.innerHTML='';
   CATALOG.forEach(sec=>{
-    const filled=sec.items.filter(i=>cSt[i.id]?.qty>0).length;
+    const filled=sec.items.filter(i=>cSt[i.id]&&cSt[i.id].qty>0).length;
     const card=document.createElement('div');card.className='sc';
     card.innerHTML=`
       <div class="sch" onclick="toggleSec(this)">
@@ -813,276 +809,319 @@ function renderCierre(){
         <div class="ci-note-row">
           <textarea class="inp ta" id="cnotes-${item.id}" placeholder="Notas para producción…" rows="1"
             oninput="updCierre('${item.id}')">${st.notes||''}</textarea>
-
-```
-    </div>`;
-  }).join('')}</div>`;
-con.appendChild(card);
-```
-
-});
+        </div>`;
+      }).join('')}</div>`;
+    con.appendChild(card);
+  });
 }
 
 function updCierre(id){
-const qty=parseInt(document.getElementById(‘cq-’+id)?.value)||0;
-const notes=document.getElementById(‘cnotes-’+id)?.value||’’;
-const who=document.getElementById(‘cwho-’+id)?.value||activeWho||’’;
-cSt[id]={qty,notes,who};
-const el=document.getElementById(‘cq-’+id);
-if(el)el.className=‘inp qi’+(qty>0?’ hv’:’’);
-sv(SK.cierre,cSt);
+  const qty=parseInt((document.getElementById('cq-'+id)||{}).value)||0;
+  const notes=(document.getElementById('cnotes-'+id)||{}).value||'';
+  const who=(document.getElementById('cwho-'+id)||{}).value||activeWho||'';
+  cSt[id]={qty,notes,who};
+  const el=document.getElementById('cq-'+id);
+  if(el)el.className='inp qi'+(qty>0?' hv':'');
+  sv(SK.cierre,cSt);
 }
 
 function saveCierre(){
-sv(SK.cierre,cSt);
-Object.entries(cSt).forEach(([id,val])=>{
-if(val.qty>0){
-const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
-pushToSheets(‘cierre’,{date:today(),name:item?.name||id,qty:val.qty,who:val.who||activeWho,notes:val.notes});
-}
-});
-const b=document.getElementById(‘cierre-btn’);
-b.textContent=‘✓ Guardado’;b.style.background=‘var(–olive)’;
-setTimeout(()=>{b.textContent=‘💾 Guardar orden’;b.style.background=’’;},2000);
+  sv(SK.cierre,cSt);
+  Object.entries(cSt).forEach(([id,val])=>{
+    if(val.qty>0){
+      const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
+      pushToSheets('cierre',{date:today(),name:(item&&item.name||id),qty:val.qty,who:val.who||activeWho,notes:val.notes});
+    }
+  });
+  const b=document.getElementById('cierre-btn');
+  b.textContent='✓ Guardado';b.style.background='var(--olive)';
+  setTimeout(()=>{b.textContent='💾 Guardar orden';b.style.background='';},2000);
 }
 
 // ═══════════════════════════════
 // DESCONGELACIÓN
 // ═══════════════════════════════
 function renderDesc(){
-const con=document.getElementById(‘desc-secs’);con.innerHTML=’’;
-const checked=DESCONGELA.filter(i=>dSt[i.id]?.checked).length;
-const pct=DESCONGELA.length?Math.round(checked/DESCONGELA.length*100):0;
-document.getElementById(‘desc-pb’).style.width=pct+’%’;
-document.getElementById(‘desc-pc’).textContent=`${checked} / ${DESCONGELA.length}`;
-const card=document.createElement(‘div’);card.className=‘sc’;
-card.innerHTML=` <div class="sch" onclick="toggleSec(this)"> <span class="si">🧊</span><span class="st">Productos a descongelar</span> <span class="sb ice">${checked}/${DESCONGELA.length}</span> <span class="schev">▾</span> </div> <div class="scb">${DESCONGELA.map(item=>{ const st=dSt[item.id]||{}; return`<div class="di" id="di-${item.id}">
-<div>
-<div class="di-name" style="${st.checked?'opacity:.4;text-decoration:line-through':''}">${item.name}</div>
-<div class="di-det">${item.detail}</div>
-</div>
-<div class="di-qty-col">
-<div class="di-ql">Cantidad</div>
-<input class="inp qi" type="text" id="dqty-${item.id}" value="${st.qty||''}" placeholder="—" oninput="updDesc('${item.id}')">
-</div>
-<div class="di-chk${st.checked?' on':''}" id="dchk-${item.id}" onclick="toggleDesc('${item.id}')">✓</div>
-</div>
-<div class="di-who-row">
-<span class="di-ql">Anota:</span>
-<select class="inp" style="width:auto;font-size:9px;padding:3px 6px;" id="dwho-${item.id}" onchange="updDesc('${item.id}')">
-<option value="">—</option>
-${TEAM.map(n=>`<option value="${n}"${st.who===n?' selected':''}>${n}</option>`).join(’’)}
-</select>
-</div>
-<div class="di-note-row">
-<textarea class="inp ta" id="dnotes-${item.id}" placeholder="Observaciones…" rows="1"
-oninput="updDesc('${item.id}')">${st.notes||’’}</textarea>
-</div>`; }).join('')}</div>`;
-con.appendChild(card);
+  const con=document.getElementById('desc-secs');con.innerHTML='';
+  const checked=DESCONGELA.filter(i=>dSt[i.id]&&dSt[i.id].checked).length;
+  const pct=DESCONGELA.length?Math.round(checked/DESCONGELA.length*100):0;
+  document.getElementById('desc-pb').style.width=pct+'%';
+  document.getElementById('desc-pc').textContent=`${checked} / ${DESCONGELA.length}`;
+  const card=document.createElement('div');card.className='sc';
+  card.innerHTML=`
+    <div class="sch" onclick="toggleSec(this)">
+      <span class="si">🧊</span><span class="st">Productos a descongelar</span>
+      <span class="sb ice">${checked}/${DESCONGELA.length}</span>
+      <span class="schev">▾</span>
+    </div>
+    <div class="scb">${DESCONGELA.map(item=>{
+      const st=dSt[item.id]||{};
+      return`<div class="di" id="di-${item.id}">
+        <div>
+          <div class="di-name" style="${st.checked?'opacity:.4;text-decoration:line-through':''}">${item.name}</div>
+          <div class="di-det">${item.detail}</div>
+        </div>
+        <div class="di-qty-col">
+          <div class="di-ql">Cantidad</div>
+          <input class="inp qi" type="text" id="dqty-${item.id}" value="${st.qty||''}" placeholder="—" oninput="updDesc('${item.id}')">
+        </div>
+        <div class="di-chk${st.checked?' on':''}" id="dchk-${item.id}" onclick="toggleDesc('${item.id}')">✓</div>
+      </div>
+      <div class="di-who-row">
+        <span class="di-ql">Anota:</span>
+        <select class="inp" style="width:auto;font-size:9px;padding:3px 6px;" id="dwho-${item.id}" onchange="updDesc('${item.id}')">
+          <option value="">—</option>
+          ${TEAM.map(n=>`<option value="${n}"${st.who===n?' selected':''}>${n}</option>`).join('')}
+        </select>
+      </div>
+      <div class="di-note-row">
+        <textarea class="inp ta" id="dnotes-${item.id}" placeholder="Observaciones…" rows="1"
+          oninput="updDesc('${item.id}')">${st.notes||''}</textarea>
+      </div>`;
+    }).join('')}</div>`;
+  con.appendChild(card);
 }
 
 function updDesc(id){
-dSt[id]={…(dSt[id]||{}),
-qty:document.getElementById(‘dqty-’+id)?.value||’’,
-notes:document.getElementById(‘dnotes-’+id)?.value||’’,
-who:document.getElementById(‘dwho-’+id)?.value||activeWho||’’,
-};
-sv(SK.desc,dSt);
+  dSt[id]={...(dSt[id]||{}),
+    qty:(document.getElementById('dqty-'+id)||{}).value||'',
+    notes:(document.getElementById('dnotes-'+id)||{}).value||'',
+    who:(document.getElementById('dwho-'+id)||{}).value||activeWho||'',
+  };
+  sv(SK.desc,dSt);
 }
 
 function toggleDesc(id){
-updDesc(id);
-const on=!dSt[id]?.checked;
-dSt[id]={…dSt[id],checked:on,checkedAt:on?new Date().toISOString():null};
-sv(SK.desc,dSt);
-if(on){
-const item=DESCONGELA.find(i=>i.id===id);
-const record={date:today(),itemId:id,name:item?.name||id,…dSt[id]};
-dHist.push(record);sv(SK.dhist,dHist);
-pushToSheets(‘descongelacion’,record);
-}
-renderDesc();
+  updDesc(id);
+  const on=!dSt[id]&&dSt[id].checked;
+  dSt[id]={...dSt[id],checked:on,checkedAt:on?new Date().toISOString():null};
+  sv(SK.desc,dSt);
+  if(on){
+    const item=DESCONGELA.find(i=>i.id===id);
+    const record={date:today(),itemId:id,name:(item&&item.name||id),...dSt[id]};
+    dHist.push(record);sv(SK.dhist,dHist);
+    pushToSheets('descongelacion',record);
+  }
+  renderDesc();
 }
 
 function saveDesc(){
-sv(SK.desc,dSt);
-const b=document.getElementById(‘desc-btn’);
-b.textContent=‘✓ Guardado’;b.style.background=‘var(–olive)’;
-setTimeout(()=>{b.textContent=‘💾 Guardar’;b.style.background=’’;},2000);
+  sv(SK.desc,dSt);
+  const b=document.getElementById('desc-btn');
+  b.textContent='✓ Guardado';b.style.background='var(--olive)';
+  setTimeout(()=>{b.textContent='💾 Guardar';b.style.background='';},2000);
 }
 
 // ═══════════════════════════════
 // PRODUCCIÓN
 // ═══════════════════════════════
 function filterProd(){
-searchQ=(document.getElementById(‘prod-search’)?.value||’’).toLowerCase();
-renderProd();
+  searchQ=((document.getElementById('prod-search')||{}).value||'').toLowerCase();
+  renderProd();
 }
 
 function renderProd(){
-const con=document.getElementById(‘prod-secs’);con.innerHTML=’’;
-let totReq=0,totDone=0;
+  const con=document.getElementById('prod-secs');con.innerHTML='';
+  let totReq=0,totDone=0;
 
-CATALOG.forEach(sec=>{
-// Filter items by search
-const visibleItems=sec.items.filter(i=>{
-if(!searchQ) return true;
-return i.name.toLowerCase().includes(searchQ);
-});
-if(!visibleItems.length) return;
+  CATALOG.forEach(sec=>{
+    // Filter items by search
+    const visibleItems=sec.items.filter(i=>{
+      if(!searchQ) return true;
+      return i.name.toLowerCase().includes(searchQ);
+    });
+    if(!visibleItems.length) return;
 
-```
-const reqItems=sec.items.filter(i=>(cSt[i.id]?.qty||0)>0);
-const doneInSec=reqItems.filter(i=>pSt[i.id]?.done).length;
-totReq+=reqItems.length;totDone+=doneInSec;
+    const reqItems=sec.items.filter(i=>((cSt[i.id]&&cSt[i.id].qty)||0)>0);
+    const doneInSec=reqItems.filter(i=>pSt[i.id]&&pSt[i.id].done).length;
+    totReq+=reqItems.length;totDone+=doneInSec;
 
-const card=document.createElement('div');card.className='sc';
-card.innerHTML=`
-  <div class="sch" onclick="toggleSec(this)">
-    <span class="si">${sec.icon}</span><span class="st">${sec.title}</span>
-    <span class="sb${doneInSec===reqItems.length&&reqItems.length>0?' full':''}">${doneInSec}/${reqItems.length}</span>
-    <span class="schev">▾</span>
-  </div>
-  <div class="scb">${visibleItems.map(item=>{
-    const cs=cSt[item.id]||{},ps=pSt[item.id]||{};
-    const req=cs.qty||0,isDone=!!ps.done;
-    const highlight=searchQ&&item.name.toLowerCase().includes(searchQ);
-    return`<div class="pi${!req&&!highlight?' dim':''}${isDone?' donebg':''}" id="pi-${item.id}">
-      <div class="pi-head">
-        <div class="pdot${isDone?' done':req>0?' enc':''}"></div>
-        <div class="pi-name">${item.name}</div>
-        <span class="pi-enc${!req?' z':''}">${req?req+' receta'+(req>1?'s':''):'Sin encargar'}</span>
+    const card=document.createElement('div');card.className='sc';
+    card.innerHTML=`
+      <div class="sch" onclick="toggleSec(this)">
+        <span class="si">${sec.icon}</span><span class="st">${sec.title}</span>
+        <span class="sb${doneInSec===reqItems.length&&reqItems.length>0?' full':''}">${doneInSec}/${reqItems.length}</span>
+        <span class="schev">▾</span>
       </div>
-      ${cs.notes?`<div class="note-banner">📝 ${cs.notes}${cs.who?' · '+cs.who:''}</div>`:''}
-      <div class="pi-fields">
-        <div class="pf"><label>Recetas elaboradas</label>
-          <input class="inp" type="number" min="0" id="pr-rec-${item.id}" value="${ps.recetas||''}" placeholder="0" oninput="updProd('${item.id}')"></div>
-        <div class="pf"><label>Bolsas envasadas</label>
-          <input class="inp" type="number" min="0" id="pr-bol-${item.id}" value="${ps.bolsas||''}" placeholder="0" oninput="updProd('${item.id}')"></div>
-        <div class="pf"><label>Peso total (kg)</label>
-          <input class="inp" type="number" step="0.1" id="pr-pes-${item.id}" value="${ps.peso||''}" placeholder="0.0" oninput="updProd('${item.id}')"></div>
-        <div class="pf"><label>Temp. central (°C)</label>
-          <input class="inp" type="number" id="pr-tmp-${item.id}" value="${ps.temp||''}" placeholder="ej. 4" oninput="updProd('${item.id}')"></div>
-        <div class="pf"><label>Fecha caducidad</label>
-          <input class="inp" type="date" id="pr-cad-${item.id}" value="${ps.cad||cadDef(item.freq)}" oninput="updProd('${item.id}')"></div>
-        <div class="pf"><label>Nº Lote</label>
-          <input class="inp" type="text" id="pr-lot-${item.id}" value="${ps.lote||loteDef(item.id)}" oninput="updProd('${item.id}')"></div>
-        <div class="pf"><label>Elaborado por</label>
-          <select class="inp" id="pr-who-${item.id}" onchange="updProd('${item.id}')">
-            <option value="">—</option>
-            ${TEAM.map(n=>`<option value="${n}"${(ps.who||activeWho)===n?' selected':''}>${n}</option>`).join('')}
-          </select></div>
-        <div class="pf wide"><label>Observaciones</label>
-          <textarea class="inp ta" id="pr-obs-${item.id}" placeholder="Variaciones, incidencias…" rows="2"
-            oninput="updProd('${item.id}')">${ps.obs||''}</textarea></div>
-      </div>
-      <div class="pi-actions">
-        <button class="btn bprint bsm" onclick="openLbl('${item.id}')">🖨 Etiqueta</button>
-        <button class="btn bdone bsm${isDone?' isdone':''}" onclick="toggleDone('${item.id}')">
-          ${isDone?'✓ Completado':'Marcar completo'}</button>
-        ${isDone?`<span class="done-stamp">✓ ${fmtD(ps.doneAt?.slice(0,10))} · ${ps.who||'—'}</span>`:''}
-      </div>
-    </div>`;
-  }).join('')}</div>`;
-con.appendChild(card);
-```
+      <div class="scb">${visibleItems.map(item=>{
+        const cs=cSt[item.id]||{},ps=pSt[item.id]||{};
+        const req=cs.qty||0,isDone=!!ps.done;
+        const highlight=searchQ&&item.name.toLowerCase().includes(searchQ);
+        return`<div class="pi${!req&&!highlight?' dim':''}${isDone?' donebg':''}" id="pi-${item.id}">
+          <div class="pi-head">
+            <div class="pdot${isDone?' done':req>0?' enc':''}"></div>
+            <div class="pi-name">${item.name}</div>
+            <span class="pi-enc${!req?' z':''}">${req?req+' receta'+(req>1?'s':''):'Sin encargar'}</span>
+          </div>
+          ${cs.notes?`<div class="note-banner">📝 ${cs.notes}${cs.who?' · '+cs.who:''}</div>`:''}
+          <div class="pi-fields">
+            <div class="pf"><label>Recetas elaboradas</label>
+              <input class="inp" type="number" min="0" id="pr-rec-${item.id}" value="${ps.recetas||''}" placeholder="0" oninput="updProd('${item.id}')"></div>
+            <div class="pf"><label>Bolsas envasadas</label>
+              <input class="inp" type="number" min="0" id="pr-bol-${item.id}" value="${ps.bolsas||''}" placeholder="0" oninput="updProd('${item.id}')"></div>
+            <div class="pf"><label>Peso total (kg)</label>
+              <input class="inp" type="number" step="0.1" id="pr-pes-${item.id}" value="${ps.peso||''}" placeholder="0.0" oninput="updProd('${item.id}')"></div>
+            <div class="pf"><label>Temp. central (°C)</label>
+              <input class="inp" type="number" id="pr-tmp-${item.id}" value="${ps.temp||''}" placeholder="ej. 4" oninput="updProd('${item.id}')"></div>
+            <div class="pf"><label>Fecha caducidad</label>
+              <input class="inp" type="date" id="pr-cad-${item.id}" value="${ps.cad||cadDef(item.freq)}" oninput="updProd('${item.id}')"></div>
+            <div class="pf"><label>Nº Lote</label>
+              <input class="inp" type="text" id="pr-lot-${item.id}" value="${ps.lote||loteDef(item.id)}" oninput="updProd('${item.id}')"></div>
+            <div class="pf"><label>Elaborado por</label>
+              <select class="inp" id="pr-who-${item.id}" onchange="updProd('${item.id}')">
+                <option value="">—</option>
+                ${TEAM.map(n=>`<option value="${n}"${(ps.who||activeWho)===n?' selected':''}>${n}</option>`).join('')}
+              </select></div>
+            <div class="pf wide"><label>Observaciones</label>
+              <textarea class="inp ta" id="pr-obs-${item.id}" placeholder="Variaciones, incidencias…" rows="2"
+                oninput="updProd('${item.id}')">${ps.obs||''}</textarea></div>
+          </div>
+          <div class="pi-actions">
+            <button class="btn bprint bsm" onclick="openLbl('${item.id}')">🖨 Etiqueta</button>
+            <button class="btn bdone bsm${isDone?' isdone':''}" onclick="toggleDone('${item.id}')">
+              ${isDone?'✓ Completado':'Marcar completo'}</button>
+            ${isDone?`<span class="done-stamp">✓ ${fmtD(((ps.doneAt||'').slice(0,10)))} · ${ps.who||'—'}</span>`:''}
+          </div>
+        </div>`;
+      }).join('')}</div>`;
+    con.appendChild(card);
+  });
 
-});
-
-const pct=totReq>0?Math.round(totDone/totReq*100):0;
-document.getElementById(‘prod-pb’).style.width=pct+’%’;
-document.getElementById(‘prod-pc’).textContent=`${totDone} / ${totReq} completados`;
+  const pct=totReq>0?Math.round(totDone/totReq*100):0;
+  document.getElementById('prod-pb').style.width=pct+'%';
+  document.getElementById('prod-pc').textContent=`${totDone} / ${totReq} completados`;
 }
 
 function updProd(id){
-pSt[id]={…(pSt[id]||{}),
-recetas:document.getElementById(‘pr-rec-’+id)?.value||’’,
-bolsas: document.getElementById(‘pr-bol-’+id)?.value||’’,
-peso:   document.getElementById(‘pr-pes-’+id)?.value||’’,
-temp:   document.getElementById(‘pr-tmp-’+id)?.value||’’,
-cad:    document.getElementById(‘pr-cad-’+id)?.value||’’,
-lote:   document.getElementById(‘pr-lot-’+id)?.value||’’,
-who:    document.getElementById(‘pr-who-’+id)?.value||activeWho||’’,
-obs:    document.getElementById(‘pr-obs-’+id)?.value||’’,
-};
-sv(SK.prod,pSt);
+  pSt[id]={...(pSt[id]||{}),
+    recetas:(document.getElementById('pr-rec-'+id)||{}).value||'',
+    bolsas: (document.getElementById('pr-bol-'+id)||{}).value||'',
+    peso:   (document.getElementById('pr-pes-'+id)||{}).value||'',
+    temp:   (document.getElementById('pr-tmp-'+id)||{}).value||'',
+    cad:    (document.getElementById('pr-cad-'+id)||{}).value||'',
+    lote:   (document.getElementById('pr-lot-'+id)||{}).value||'',
+    who:    (document.getElementById('pr-who-'+id)||{}).value||activeWho||'',
+    obs:    (document.getElementById('pr-obs-'+id)||{}).value||'',
+  };
+  sv(SK.prod,pSt);
 }
 
 function toggleDone(id){
-updProd(id);
-const isDone=!pSt[id]?.done;
-pSt[id]={…pSt[id],done:isDone,doneAt:isDone?new Date().toISOString():null};
-sv(SK.prod,pSt);
-if(isDone){
-const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
-const sec=CATALOG.find(s=>s.items.some(i=>i.id===id));
-const record={date:today(),itemId:id,name:item?.name||id,section:sec?.title||’’,
-encargado:cSt[id]?.qty||0,notas_cierre:cSt[id]?.notes||’’,quien_cierre:cSt[id]?.who||’’,…pSt[id]};
-hist.push(record);sv(SK.hist,hist);
-pushToSheets(‘produccion’,record);
-}
-renderProd();
+  updProd(id);
+  const isDone=!pSt[id]&&pSt[id].done;
+  pSt[id]={...pSt[id],done:isDone,doneAt:isDone?new Date().toISOString():null};
+  sv(SK.prod,pSt);
+  if(isDone){
+    const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
+    const sec=CATALOG.find(s=>s.items.some(i=>i.id===id));
+    const record={date:today(),itemId:id,name:(item&&item.name||id),section:(sec&&sec.title)||'',
+      encargado:(cSt[id]&&cSt[id].qty)||0,notas_cierre:(cSt[id]&&cSt[id].notes)||'',quien_cierre:(cSt[id]&&cSt[id].who)||'',...pSt[id]};
+    hist.push(record);sv(SK.hist,hist);
+    pushToSheets('produccion',record);
+  }
+  renderProd();
 }
 
 // ADD MANUAL
-function openAddManual(){document.getElementById(‘add-modal’).classList.add(‘open’);}
-function closeAddManual(){document.getElementById(‘add-modal’).classList.remove(‘open’);}
+function openAddManual(){document.getElementById('add-modal').classList.add('open');}
+function closeAddManual(){document.getElementById('add-modal').classList.remove('open');}
 function saveManual(){
-const name=document.getElementById(‘am-name’)?.value?.trim();
-if(!name){alert(‘Escribe el nombre de la elaboración’);return;}
-const rec=document.getElementById(‘am-rec’)?.value||’’;
-const bol=document.getElementById(‘am-bol’)?.value||’’;
-const who=document.getElementById(‘am-who’)?.value||activeWho||’’;
-const obs=document.getElementById(‘am-obs’)?.value||’’;
-const record={date:today(),name,section:‘Manual’,encargado:0,recetas:rec,bolsas:bol,who,obs,
-lote:‘LD’+today().replace(/-/g,’’)+’-MAN’,cad:’’,notas_cierre:’’,quien_cierre:’’,
-done:true,doneAt:new Date().toISOString()};
-hist.push(record);sv(SK.hist,hist);
-pushToSheets(‘produccion’,record);
-closeAddManual();
-document.getElementById(‘am-name’).value=’’;
-document.getElementById(‘am-rec’).value=’’;
-document.getElementById(‘am-bol’).value=’’;
-document.getElementById(‘am-obs’).value=’’;
-showSync(‘✓ Elaboración registrada’,true);
+  const name=(document.getElementById('am-name')||{}).value||'';
+  if(!name){alert('Escribe el nombre de la elaboración');return;}
+  const rec=(document.getElementById('am-rec')||{}).value||'';
+  const bol=(document.getElementById('am-bol')||{}).value||'';
+  const who=(document.getElementById('am-who')||{}).value||activeWho||'';
+  const obs=(document.getElementById('am-obs')||{}).value||'';
+  const record={date:today(),name,section:'Manual',encargado:0,recetas:rec,bolsas:bol,who,obs,
+    lote:'LD'+today().replace(/-/g,'')+'-MAN',cad:'',notas_cierre:'',quien_cierre:'',
+    done:true,doneAt:new Date().toISOString()};
+  hist.push(record);sv(SK.hist,hist);
+  pushToSheets('produccion',record);
+  closeAddManual();
+  document.getElementById('am-name').value='';
+  document.getElementById('am-rec').value='';
+  document.getElementById('am-bol').value='';
+  document.getElementById('am-obs').value='';
+  showSync('✓ Elaboración registrada',true);
 }
 
 // ═══════════════════════════════
 // FICHAS TÉCNICAS
 // ═══════════════════════════════
 function renderFichas(){
-const grid=document.getElementById(‘fichas-grid’);
-grid.innerHTML=FICHAS.map(f=>` <div class="ficha-card" onclick="expandFicha('${f.id}')"> <div class="ficha-card-head"> <span class="ficha-icon">${f.icon}</span> <span class="ficha-name">${f.name}</span> <span class="ficha-badge">${f.category}</span> </div> <div class="ficha-body" id="ficha-body-${f.id}"> <div class="ficha-section"> <div class="ficha-section-title">Ingredientes</div> ${f.ingredientes.map(i=>`<div class="ficha-ing-row"><span class="ficha-ing-name">${i.name}</span><span class="ficha-ing-qty">${i.qty}</span></div>`).join('')} </div> <div class="ficha-section"> <div class="ficha-section-title">Elaboración</div> ${f.pasos.map((p,i)=>`<div class="ficha-step"><span class="ficha-step-num">${i+1}.</span><span>${p}</span></div>`).join('')} </div> ${f.rendimiento?`<div class="ficha-section"><div class="ficha-section-title">Rendimiento</div><div style="font-size:11px">${f.rendimiento}</div></div>`:''} ${f.conservacion?`<div class="ficha-section"><div class="ficha-section-title">Conservación</div><div style="font-size:11px">${f.conservacion}</div></div>`:''} <div><span class="ficha-allergen">⚠ ${f.allergens||'Sin alérgenos principales'}</span></div> ${f.pdf?`<div><a class="ficha-pdf-link" onclick="openPDF('${f.pdf}','${f.name}');event.stopPropagation()">📄 Ver PDF completo</a></div>`:''} </div> </div>`).join(’’);
+  const grid=document.getElementById('fichas-grid');
+  grid.innerHTML=FICHAS.map(f=>`
+    <div class="ficha-card" onclick="expandFicha('${f.id}')">
+      <div class="ficha-card-head">
+        <span class="ficha-icon">${f.icon}</span>
+        <span class="ficha-name">${f.name}</span>
+        <span class="ficha-badge">${f.category}</span>
+      </div>
+      <div class="ficha-body" id="ficha-body-${f.id}">
+        <div class="ficha-section">
+          <div class="ficha-section-title">Ingredientes</div>
+          ${f.ingredientes.map(i=>`<div class="ficha-ing-row"><span class="ficha-ing-name">${i.name}</span><span class="ficha-ing-qty">${i.qty}</span></div>`).join('')}
+        </div>
+        <div class="ficha-section">
+          <div class="ficha-section-title">Elaboración</div>
+          ${f.pasos.map((p,i)=>`<div class="ficha-step"><span class="ficha-step-num">${i+1}.</span><span>${p}</span></div>`).join('')}
+        </div>
+        ${f.rendimiento?`<div class="ficha-section"><div class="ficha-section-title">Rendimiento</div><div style="font-size:11px">${f.rendimiento}</div></div>`:''}
+        ${f.conservacion?`<div class="ficha-section"><div class="ficha-section-title">Conservación</div><div style="font-size:11px">${f.conservacion}</div></div>`:''}
+        <div><span class="ficha-allergen">⚠ ${f.allergens||'Sin alérgenos principales'}</span></div>
+        ${f.pdf?`<div><a class="ficha-pdf-link" onclick="openPDF('${f.pdf}','${f.name}');event.stopPropagation()">📄 Ver PDF completo</a></div>`:''}
+      </div>
+    </div>`).join('');
 }
 
 function expandFicha(id){
-// already expanded by default – cards are always open
+  // already expanded by default – cards are always open
 }
 
 function openPDF(file,title){
-document.getElementById(‘pdf-modal-title’).textContent=title;
-document.getElementById(‘pdf-frame’).src=file;
-document.getElementById(‘pdf-modal’).classList.add(‘open’);
+  document.getElementById('pdf-modal-title').textContent=title;
+  document.getElementById('pdf-frame').src=file;
+  document.getElementById('pdf-modal').classList.add('open');
 }
 function closePDF(){
-document.getElementById(‘pdf-modal’).classList.remove(‘open’);
-document.getElementById(‘pdf-frame’).src=’’;
+  document.getElementById('pdf-modal').classList.remove('open');
+  document.getElementById('pdf-frame').src='';
 }
 
 // ═══════════════════════════════
 // TABLA DE PESOS
 // ═══════════════════════════════
 function renderPesos(){
-const wrap=document.getElementById(‘pesos-wrap’);
-const itemsWithWeight=[];
-CATALOG.forEach(sec=>{
-const wItems=sec.items.filter(i=>i.weight);
-if(wItems.length) itemsWithWeight.push({sec,items:wItems});
-});
-wrap.innerHTML=` <table class="pesos-table"> <thead><tr> <th>Elaboración</th> <th>Peso/bolsa</th> <th>Uds/bolsa</th> <th>Peso/ud</th> <th>Sección</th> <th>Alérgenos</th> </tr></thead> <tbody> ${itemsWithWeight.map(({sec,items})=>`
-<tr class="pesos-section-row"><td colspan="6">${sec.icon} ${sec.title}</td></tr>
-${items.map(i=>`<tr> <td>${i.name}</td> <td class="pesos-val">${i.weight?i.weight+' g':'—'}</td> <td class="pesos-uds">${i.uds||'—'}</td> <td class="pesos-val">${i.udsW?i.udsW+' g':i.weight&&i.uds?Math.round(i.weight/i.uds)+' g':'—'}</td> <td style="color:var(--muted)">${sec.title}</td> <td style="color:var(--rust2);font-size:9px">${i.allergens||'—'}</td> </tr>`).join(’’)}
-`).join('')} </tbody> </table>`;
+  const wrap=document.getElementById('pesos-wrap');
+  const itemsWithWeight=[];
+  CATALOG.forEach(sec=>{
+    const wItems=sec.items.filter(i=>i.weight);
+    if(wItems.length) itemsWithWeight.push({sec,items:wItems});
+  });
+  wrap.innerHTML=`
+    <table class="pesos-table">
+      <thead><tr>
+        <th>Elaboración</th>
+        <th>Peso/bolsa</th>
+        <th>Uds/bolsa</th>
+        <th>Peso/ud</th>
+        <th>Sección</th>
+        <th>Alérgenos</th>
+      </tr></thead>
+      <tbody>
+        ${itemsWithWeight.map(({sec,items})=>`
+          <tr class="pesos-section-row"><td colspan="6">${sec.icon} ${sec.title}</td></tr>
+          ${items.map(i=>`<tr>
+            <td>${i.name}</td>
+            <td class="pesos-val">${i.weight?i.weight+' g':'—'}</td>
+            <td class="pesos-uds">${i.uds||'—'}</td>
+            <td class="pesos-val">${i.udsW?i.udsW+' g':i.weight&&i.uds?Math.round(i.weight/i.uds)+' g':'—'}</td>
+            <td style="color:var(--muted)">${sec.title}</td>
+            <td style="color:var(--rust2);font-size:9px">${i.allergens||'—'}</td>
+          </tr>`).join('')}
+        `).join('')}
+      </tbody>
+    </table>`;
 }
 
 // ═══════════════════════════════
@@ -1090,81 +1129,120 @@ ${items.map(i=>`<tr> <td>${i.name}</td> <td class="pesos-val">${i.weight?i.weigh
 // ═══════════════════════════════
 let lblItem=null;
 function openLbl(id){
-updProd(id);lblItem=id;
-const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
-const ps=pSt[id]||{};
-document.getElementById(‘lprev’).innerHTML=` <div class="lp" id="lp-print"> <div class="lp-logo">★ LA DOLORES · Vermutería</div> <div class="lp-prod">${item.name}</div> <div class="lp-row"><span>Elaboración:</span><span>${fmtD(today())}</span></div> <div class="lp-row"><span>Caducidad:</span><span><strong>${fmtD(ps.cad||cadDef(item.freq))}</strong></span></div> <div class="lp-row"><span>Lote:</span><span>${ps.lote||loteDef(id)}</span></div> ${ps.bolsas?`<div class="lp-row"><span>Bolsas:</span><span>${ps.bolsas}</span></div>`:''} ${ps.peso?`<div class="lp-row"><span>Peso:</span><span>${ps.peso} kg</span></div>`:''} ${ps.who?`<div class="lp-row"><span>Elaborado por:</span><span>${ps.who}</span></div>`:''} ${ps.temp?`<div class="lp-row"><span>Temp. central:</span><span>${ps.temp}°C</span></div>`:''} <div class="lp-al">⚠ Alérgenos: ${item.allergens||'Ver ficha técnica'}</div> <div class="lp-foot">Conservar 0–4°C · Consumir antes de la fecha indicada</div> </div>`;
-document.getElementById(‘lmod’).classList.add(‘open’);
+  updProd(id);lblItem=id;
+  const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
+  const ps=pSt[id]||{};
+  document.getElementById('lprev').innerHTML=`
+    <div class="lp" id="lp-print">
+      <div class="lp-logo">★ LA DOLORES · Vermutería</div>
+      <div class="lp-prod">${item.name}</div>
+      <div class="lp-row"><span>Elaboración:</span><span>${fmtD(today())}</span></div>
+      <div class="lp-row"><span>Caducidad:</span><span><strong>${fmtD(ps.cad||cadDef(item.freq))}</strong></span></div>
+      <div class="lp-row"><span>Lote:</span><span>${ps.lote||loteDef(id)}</span></div>
+      ${ps.bolsas?`<div class="lp-row"><span>Bolsas:</span><span>${ps.bolsas}</span></div>`:''}
+      ${ps.peso?`<div class="lp-row"><span>Peso:</span><span>${ps.peso} kg</span></div>`:''}
+      ${ps.who?`<div class="lp-row"><span>Elaborado por:</span><span>${ps.who}</span></div>`:''}
+      ${ps.temp?`<div class="lp-row"><span>Temp. central:</span><span>${ps.temp}°C</span></div>`:''}
+      <div class="lp-al">⚠ Alérgenos: ${item.allergens||'Ver ficha técnica'}</div>
+      <div class="lp-foot">Conservar 0–4°C · Consumir antes de la fecha indicada</div>
+    </div>`;
+  document.getElementById('lmod').classList.add('open');
 }
-function closeLbl(){document.getElementById(‘lmod’).classList.remove(‘open’);}
+function closeLbl(){document.getElementById('lmod').classList.remove('open');}
 function printLbl(){
-const c=document.getElementById(‘lp-print’).outerHTML;
-const w=window.open(’’,’_blank’,‘width=380,height=340’);
-w.document.write(`<!DOCTYPE html><html><head> <style> @page{size:62mm 87mm;margin:2mm;} body{margin:0;background:white;font-family:monospace;} .lp{background:white;color:#111;padding:6px 8px;width:58mm;font-size:8.5pt;} .lp-logo{font-size:11pt;font-weight:700;border-bottom:2px solid #111;margin-bottom:4px;padding-bottom:2px;} .lp-prod{font-size:10.5pt;font-weight:700;margin:4px 0 3px;text-transform:uppercase;} .lp-row{display:flex;justify-content:space-between;font-size:8pt;margin:1.5px 0;} .lp-al{font-size:7pt;color:#444;margin-top:4px;border-top:1px solid #ccc;padding-top:3px;} .lp-foot{font-size:6.5pt;color:#666;margin-top:2px;} </style></head><body>${c} <script>window.onload=()=>{window.print();setTimeout(()=>window.close(),500)}<\/script> </body></html>`);
-w.document.close();
+  const c=document.getElementById('lp-print').outerHTML;
+  const w=window.open('','_blank','width=380,height=340');
+  w.document.write(`<!DOCTYPE html><html><head>
+    <style>
+      @page{size:62mm 87mm;margin:2mm;}
+      body{margin:0;background:white;font-family:monospace;}
+      .lp{background:white;color:#111;padding:6px 8px;width:58mm;font-size:8.5pt;}
+      .lp-logo{font-size:11pt;font-weight:700;border-bottom:2px solid #111;margin-bottom:4px;padding-bottom:2px;}
+      .lp-prod{font-size:10.5pt;font-weight:700;margin:4px 0 3px;text-transform:uppercase;}
+      .lp-row{display:flex;justify-content:space-between;font-size:8pt;margin:1.5px 0;}
+      .lp-al{font-size:7pt;color:#444;margin-top:4px;border-top:1px solid #ccc;padding-top:3px;}
+      .lp-foot{font-size:6.5pt;color:#666;margin-top:2px;}
+    </style></head><body>${c}
+    <script>window.onload=()=>{window.print();setTimeout(()=>window.close(),500)}<\/script>
+    </body></html>`);
+  w.document.close();
 }
 
 // ═══════════════════════════════
 // HISTORIAL
 // ═══════════════════════════════
 function switchHTab(t){
-hTab=t;
-document.getElementById(‘htab-prod’).classList.toggle(‘on’,t===‘prod’);
-document.getElementById(‘htab-desc’).classList.toggle(‘on’,t===‘desc’);
-renderHist();
+  hTab=t;
+  document.getElementById('htab-prod').classList.toggle('on',t==='prod');
+  document.getElementById('htab-desc').classList.toggle('on',t==='desc');
+  renderHist();
 }
 function filterHist(){renderHist();}
 function renderHist(){
-const from=document.getElementById(‘hfrom’)?.value;
-const to=document.getElementById(‘hto’)?.value;
-let data=hTab===‘prod’?[…hist]:[…dHist];
-if(from) data=data.filter(r=>r.date>=from);
-if(to)   data=data.filter(r=>r.date<=to);
-const w=document.getElementById(‘htw’);
-if(!data.length){w.innerHTML=’<div class="hempty">SIN REGISTROS</div>’;return;}
-if(hTab===‘prod’){
-w.innerHTML=`<table class="ht"><thead><tr> <th>Fecha</th><th>Sección</th><th>Elaboración</th><th>Encarg.</th> <th>Recetas</th><th>Bolsas</th><th>Peso</th><th>Cad.</th> <th>Lote</th><th>Temp</th><th>Por</th><th>Obs.</th> </tr></thead><tbody> ${[...data].reverse().map(r=>`<tr>
-<td>${fmtD(r.date)}</td><td>${r.section||’’}</td><td>${r.name}</td>
-<td style="color:var(--amber)">${r.encargado||0}</td>
-<td>${r.recetas||’–’}</td><td>${r.bolsas||’–’}</td><td>${r.peso||’–’}</td>
-<td>${fmtD(r.cad)||’–’}</td><td>${r.lote||’–’}</td>
-<td>${r.temp?r.temp+‘°C’:’–’}</td><td>${r.who||’–’}</td>
-<td style="max-width:100px;white-space:normal">${r.obs||’–’}</td>
-</tr>`).join('')} </tbody></table>`;
-} else {
-w.innerHTML=`<table class="ht"><thead><tr> <th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Quién</th><th>Notas</th> </tr></thead><tbody> ${[...data].reverse().map(r=>`<tr>
-<td>${fmtD(r.date)}</td><td>${r.name}</td>
-<td style="color:var(--ice3)">${r.qty||’–’}</td>
-<td>${r.who||’–’}</td>
-<td style="max-width:140px;white-space:normal">${r.notes||’–’}</td>
-</tr>`).join('')} </tbody></table>`;
-}
+  const from=(document.getElementById('hfrom')||{}).value;
+  const to=(document.getElementById('hto')||{}).value;
+  let data=hTab==='prod'?[...hist]:[...dHist];
+  if(from) data=data.filter(r=>r.date>=from);
+  if(to)   data=data.filter(r=>r.date<=to);
+  const w=document.getElementById('htw');
+  if(!data.length){w.innerHTML='<div class="hempty">SIN REGISTROS</div>';return;}
+  if(hTab==='prod'){
+    w.innerHTML=`<table class="ht"><thead><tr>
+      <th>Fecha</th><th>Sección</th><th>Elaboración</th><th>Encarg.</th>
+      <th>Recetas</th><th>Bolsas</th><th>Peso</th><th>Cad.</th>
+      <th>Lote</th><th>Temp</th><th>Por</th><th>Obs.</th>
+    </tr></thead><tbody>
+      ${[...data].reverse().map(r=>`<tr>
+        <td>${fmtD(r.date)}</td><td>${r.section||''}</td><td>${r.name}</td>
+        <td style="color:var(--amber)">${r.encargado||0}</td>
+        <td>${r.recetas||'–'}</td><td>${r.bolsas||'–'}</td><td>${r.peso||'–'}</td>
+        <td>${fmtD(r.cad)||'–'}</td><td>${r.lote||'–'}</td>
+        <td>${r.temp?r.temp+'°C':'–'}</td><td>${r.who||'–'}</td>
+        <td style="max-width:100px;white-space:normal">${r.obs||'–'}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+  } else {
+    w.innerHTML=`<table class="ht"><thead><tr>
+      <th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Quién</th><th>Notas</th>
+    </tr></thead><tbody>
+      ${[...data].reverse().map(r=>`<tr>
+        <td>${fmtD(r.date)}</td><td>${r.name}</td>
+        <td style="color:var(--ice3)">${r.qty||'–'}</td>
+        <td>${r.who||'–'}</td>
+        <td style="max-width:140px;white-space:normal">${r.notes||'–'}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+  }
 }
 function exportCSV(){
-const from=document.getElementById(‘hfrom’)?.value;
-const to=document.getElementById(‘hto’)?.value;
-let data=hTab===‘prod’?[…hist]:[…dHist];
-if(from) data=data.filter(r=>r.date>=from);
-if(to)   data=data.filter(r=>r.date<=to);
-let csv=’’;
-if(hTab===‘prod’){
-csv=[‘Fecha,Seccion,Elaboracion,Encargado,Recetas,Bolsas,Peso_kg,Caducidad,Lote,Temp_C,Elaborado_por,Notas_cierre,Observaciones’,
-…data.map(r=>[r.date,`"${r.section||''}"`,`"${r.name}"`,r.encargado,r.recetas||’’,r.bolsas||’’,r.peso||’’,r.cad||’’,r.lote||’’,r.temp||’’,r.who||’’,`"${(r.notas_cierre||'').replace(/"/g,"'")}"`,`"${(r.obs||'').replace(/"/g,"'")}"`].join(’,’))
-].join(’\n’);
-} else {
-csv=[‘Fecha,Producto,Cantidad,Quien,Notas’,
-…data.map(r=>[r.date,`"${r.name}"`,r.qty||’’,r.who||’’,`"${(r.notes||'').replace(/"/g,"'")}"`].join(’,’))
-].join(’\n’);
-}
-const blob=new Blob([’\uFEFF’+csv],{type:‘text/csv;charset=utf-8;’});
-const a=document.createElement(‘a’);a.href=URL.createObjectURL(blob);
-a.download=`ladolores_${hTab}_${today()}.csv`;a.click();
+  const from=(document.getElementById('hfrom')||{}).value;
+  const to=(document.getElementById('hto')||{}).value;
+  let data=hTab==='prod'?[...hist]:[...dHist];
+  if(from) data=data.filter(r=>r.date>=from);
+  if(to)   data=data.filter(r=>r.date<=to);
+  let csv='';
+  if(hTab==='prod'){
+    csv=['Fecha,Seccion,Elaboracion,Encargado,Recetas,Bolsas,Peso_kg,Caducidad,Lote,Temp_C,Elaborado_por,Notas_cierre,Observaciones',
+      ...data.map(function(r){
+        return [r.date,'"'+(r.section||'')+'"','"'+(r.name||'')+'"',r.encargado||0,r.recetas||'',r.bolsas||'',r.peso||'',r.cad||'',r.lote||'',r.temp||'',r.who||'','"'+((r.notas_cierre||'').replace(/"/g,"'"))+'"','"'+((r.obs||'').replace(/"/g,"'"))+'"'].join(',');
+      })
+    ].join('\n');
+  } else {
+    csv=['Fecha,Producto,Cantidad,Quien,Notas',
+      ...data.map(function(r){
+        return [r.date,'"'+(r.name||'')+'"',r.qty||'',r.who||'','"'+((r.notes||'').replace(/"/g,"'"))+'"'].join(',');
+      })
+    ].join('\n');
+  }
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`ladolores_${hTab}_${today()}.csv`;a.click();
 }
 function clearHist(){
-if(!confirm(’¿Borrar este historial? No se puede deshacer.’))return;
-if(hTab===‘prod’){hist=[];sv(SK.hist,hist);}
-else{dHist=[];sv(SK.dhist,dHist);}
-renderHist();
+  if(!confirm('¿Borrar este historial? No se puede deshacer.'))return;
+  if(hTab==='prod'){hist=[];sv(SK.hist,hist);}
+  else{dHist=[];sv(SK.dhist,dHist);}
+  renderHist();
 }
 
 // ═══════════════════════════════
@@ -1173,7 +1251,8 @@ renderHist();
 initDates();
 renderWho();
 renderCierre();
-</script>
 
+}); // end DOMContentLoaded
+</script>
 </body>
 </html>
