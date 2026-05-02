@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test</title>
+<style>
+body{background:#111;color:#fff;font-family:monospace;padding:20px;font-size:16px;}
+.ok{color:#4f4;}
+.er{color:#f44;}
+</style>
+</head>
+<body>
+<h2>Test</h2>
+<div id="out">...</div>
+<script>
+var out = document.getElementById('out');
+var html = '';
+
+function ok(msg) { html += ’<p class="ok">✓ ’ + msg + ‘</p>’; out.innerHTML = html; }
+function er(msg) { html += ’<p class="er">✗ ’ + msg + ‘</p>’; out.innerHTML = html; }
+
+ok(‘Script arranca’);
+
+try { var x = 1 + 1; ok(’Suma: ’ + x); } catch(e) { er(’Suma: ’ + e); }
+
+try { localStorage.setItem(‘t’,‘1’); ok(’localStorage: ’ + localStorage.getItem(‘t’)); } catch(e) { er(’localStorage: ’ + e); }
+
+try {
+var arr = [1,2,3];
+var res = arr.map(function(n){ return n*2; }).join(’,’);
+ok(’Array map: ’ + res);
+} catch(e) { er(’Array: ’ + e); }
+
+try {
+var obj = {a:1, b:2};
+var keys = Object.keys(obj).join(’,’);
+ok(’Object.keys: ’ + keys);
+} catch(e) { er(’Object: ’ + e); }
+
+try {
+var d = document.createElement(‘div’);
+d.innerHTML = ‘<span>hola</span>’;
+ok(’innerHTML: ’ + d.querySelector(‘span’).textContent);
+} catch(e) { er(’innerHTML: ’ + e); }
+
+try {
+var CATALOG = [{id:‘test’, items:[{id:‘a’,name:‘Croqueta’}]}];
+var item = CATALOG[0].items[0];
+ok(’CATALOG: ’ + item.name);
+} catch(e) { er(’CATALOG: ’ + e); }
+
+ok(‘COMPLETADO’);
+</script>
+
+</body>
+</html>
