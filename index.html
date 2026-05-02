@@ -892,7 +892,7 @@ function updDesc(id){
 
 function toggleDesc(id){
   updDesc(id);
-  const on=!dSt[id]&&dSt[id].checked;
+  const on=!(dSt[id]&&dSt[id].checked);
   dSt[id]={...dSt[id],checked:on,checkedAt:on?new Date().toISOString():null};
   sv(SK.desc,dSt);
   if(on){
@@ -1007,7 +1007,7 @@ function updProd(id){
 
 function toggleDone(id){
   updProd(id);
-  const isDone=!pSt[id]&&pSt[id].done;
+  const isDone=!(pSt[id]&&pSt[id].done);
   pSt[id]={...pSt[id],done:isDone,doneAt:isDone?new Date().toISOString():null};
   sv(SK.prod,pSt);
   if(isDone){
