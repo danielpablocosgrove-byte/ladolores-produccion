@@ -371,9 +371,8 @@ body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;f
 
 <script>
 // ═══════════════════════════════
-// INIT ON DOM READY
+// INIT
 // ═══════════════════════════════
-document.addEventListener('DOMContentLoaded', function() {
 
 // ═══════════════════════════════
 // CONFIG
@@ -1248,11 +1247,13 @@ function clearHist(){
 // ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
-initDates();
-renderWho();
-renderCierre();
+document.addEventListener('DOMContentLoaded', function(){
+  initDates();
+  renderWho();
+  renderCierre();
+});
 
-}); // end DOMContentLoaded
+
 </script>
 </body>
 </html>
