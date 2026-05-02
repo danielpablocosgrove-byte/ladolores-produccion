@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test La Dolores</title>
+<style>
+body { background: #0F0C07; color: #F0E6CC; font-family: sans-serif; padding: 20px; }
+.ok { color: #53AE2A; font-weight: bold; }
+.err { color: #C03010; font-weight: bold; }
+#log { margin-top: 20px; font-size: 12px; line-height: 2; }
+</style>
+</head>
+<body>
+<h2>🔍 Diagnóstico La Dolores</h2>
+<div id="log">Cargando...</div>
+<script>
+var log = document.getElementById('log');
+var html = '';
+
+function check(label, fn) {
+try {
+var result = fn();
+html += ’<div class="ok">✓ ’ + label + (result ? ’: ’ + result : ‘’) + ‘</div>’;
+} catch(e) {
+html += ’<div class="err">✗ ’ + label + ’: ’ + e.message + ‘</div>’;
+}
+log.innerHTML = html;
+}
+
+check(‘JavaScript básico’, function() { return ‘1+1=’ + (1+1); });
+check(‘localStorage’, function() { localStorage.setItem(‘test’,‘ok’); return localStorage.getItem(‘test’); });
+check(‘Arrow functions’, function() { var f = () => ‘ok’; return f(); });
+check(‘Template literals’, function() { var x = ‘mundo’; return ‘hola ’ + x; });
+check(‘Spread operator’, function() { var a = [1,2]; var b = […a, 3]; return b.join(’,’); });
+check(‘Array destructuring’, function() { var [a,b] = [1,2]; return a+b; });
+check(‘Object destructuring’, function() { var {x} = {x:5}; return x; });
+check(‘Const/Let’, function() { const x = 1; let y = 2; return x+y; });
+check(‘JSON parse’, function() { return JSON.parse(’{“ok”:true}’).ok; });
+check(‘Fetch API’, function() { return typeof fetch !== ‘undefined’ ? ‘disponible’ : ‘NO DISPONIBLE’; });
+check(‘Optional chaining’, function() { var x = null; return (x && x.y) || ‘ok fallback’; });
+check(‘createElement’, function() { var d = document.createElement(‘div’); d.innerHTML = ‘test’; return d.textContent; });
+check(‘CATALOG array’, function() {
+var CATALOG = [{id:‘test’, items:[{id:‘a’, name:‘Prueba’}]}];
+return CATALOG[0].items[0].name;
+});
+check(‘Template en innerHTML’, function() {
+var d = document.createElement(‘div’);
+var name = ‘Daniel’;
+d.innerHTML = ‘<span>’ + name + ‘</span>’;
+return d.querySelector(‘span’).textContent;
+});
+
+html += ‘<div style="margin-top:20px;color:#C9A84C">✓ Diagnóstico completado</div>’;
+log.innerHTML = html;
+</script>
+
+</body>
+</html>
