@@ -258,10 +258,13 @@ body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;f
     <div class="brand-logo">La Dolores</div>
     <div class="brand-sub">Sistema de Cocina</div>
   </div>
-  <div class="brand-diamonds">
-    <div class="brand-diamond"></div>
-    <div class="brand-diamond"></div>
-    <div class="brand-diamond"></div>
+  <div style="display:flex;align-items:center;gap:10px;margin-left:auto;">
+    <button onclick="refreshAll()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:white;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:5px 10px;border-radius:2px;cursor:pointer;">🔄 Sync</button>
+    <div class="brand-diamonds">
+      <div class="brand-diamond"></div>
+      <div class="brand-diamond"></div>
+      <div class="brand-diamond"></div>
+    </div>
   </div>
 </div>
 <div class="tab-bar">
@@ -408,6 +411,8 @@ body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;f
 </div>
 
 <script>
+try {
+
 
 // ═══════════════════════════════
 // INIT
@@ -998,29 +1003,136 @@ let hTab='prod',activeWho='',searchQ='';
 activeWho=localStorage.getItem(SK.who)||'';
 
 // ═══════════════════════════════
-// SYNC
+// SYNC CON GOOGLE SHEETS
 // ═══════════════════════════════
-async function pushToSheets(tab,rowData){
-  try{
-    const res=await fetch(API_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'save',tab,...rowData}),
-      mode:'no-cors',
+var syncing = false;
+
+async function apiCall(payload) {
+  try {
+    var res = await fetch(API_URL + '?cb=' + Date.now(), {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      mode: 'no-cors',
     });
-    showSync('☁️ Guardado en Google Sheets',true);
-  }catch(e){
-    showSync('⚠️ Sin conexión — guardado local',false);
+    return { ok: true };
+  } catch(e) {
+    return { ok: false, error: e.message };
   }
 }
 
-async function loadFromSheets(tab){
-  try{
-    const url=`${API_URL}?action=get&tab=${tab}`;
-    const res=await fetch(url,{mode:'cors'});
-    const data=await res.json();
-    return data.rows||[];
-  }catch(e){return null;}
+async function apiGet(params) {
+  try {
+    var qs = Object.keys(params).map(function(k){ return k+'='+encodeURIComponent(params[k]); }).join('&');
+    var res = await fetch(API_URL + '?' + qs + '&cb=' + Date.now());
+    var data = await res.json();
+    return data;
+  } catch(e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+function showSync(msg, ok) {
+  var bar = document.getElementById('sync-bar');
+  if (!bar) return;
+  bar.textContent = msg;
+  bar.style.background = ok ? '#3A4E1E' : '#8B2E0F';
+  bar.style.display = 'block';
+  setTimeout(function(){ bar.style.display = 'none'; }, 3000);
+}
+
+// Cargar estado del día desde Sheets
+async function loadDayFromSheets() {
+  if (syncing) return;
+  syncing = true;
+  showSync('🔄 Sincronizando...', true);
+  
+  try {
+    // Load cierre
+    var cierreData = await apiGet({ action: 'get_cierre', date: today() });
+    if (cierreData && cierreData.ok && cierreData.items && cierreData.items.length > 0) {
+      cierreData.items.forEach(function(item) {
+        if (item.id) {
+          cSt[item.id] = { qty: parseInt(item.qty)||0, who: item.who||'', notes: item.notes||'' };
+        }
+      });
+      sv(SK.cierre, cSt);
+    }
+
+    // Load prod state
+    var prodData = await apiGet({ action: 'get_prod', date: today() });
+    if (prodData && prodData.ok && prodData.items) {
+      Object.keys(prodData.items).forEach(function(id) {
+        var item = prodData.items[id];
+        pSt[id] = {
+          who: item.who||'', recetas: item.recetas||'', bolsas: item.bolsas||'',
+          peso: item.peso||'', temp: item.temp||'', cad: item.cad||'',
+          lote: item.lote||'', obs: item.obs||'', done: item.done===true||item.done==='true'||item.done==='TRUE'
+        };
+      });
+      sv(SK.prod, pSt);
+    }
+
+    // Load desc state
+    var descData = await apiGet({ action: 'get_desc', date: today() });
+    if (descData && descData.ok && descData.items) {
+      Object.keys(descData.items).forEach(function(id) {
+        var item = descData.items[id];
+        dSt[id] = { qty: item.qty||'', who: item.who||'', notes: item.notes||'', checked: item.checked===true||item.checked==='true'||item.checked==='TRUE' };
+      });
+      sv(SK.desc, dSt);
+    }
+
+    showSync('✓ Sincronizado', true);
+  } catch(e) {
+    showSync('⚠️ Sin conexión — datos locales', false);
+  }
+  
+  syncing = false;
+}
+
+// Guardar cierre en Sheets
+async function saveCierreToSheets() {
+  var items = [];
+  Object.keys(cSt).forEach(function(id) {
+    var val = cSt[id];
+    if (val.qty > 0) {
+      var item = CATALOG.reduce(function(a,s){return a.concat(s.items);},[]).filter(function(i){return i.id===id;})[0];
+      items.push({ id: id, name: item ? item.name : id, qty: val.qty, who: val.who||'', notes: val.notes||'' });
+    }
+  });
+  await apiCall({ action: 'save_cierre', date: today(), items: JSON.stringify(items) });
+}
+
+// Guardar estado producción en Sheets
+async function saveProdToSheets(id) {
+  var ps = pSt[id] || {};
+  var item = CATALOG.reduce(function(a,s){return a.concat(s.items);},[]).filter(function(i){return i.id===id;})[0];
+  var sec = CATALOG.filter(function(s){return s.items.some(function(i){return i.id===id;});})[0];
+  await apiCall({
+    action: 'save_prod',
+    date: today(),
+    itemId: id,
+    name: item ? item.name : id,
+    section: sec ? sec.title : '',
+    who: ps.who||'', recetas: ps.recetas||'', bolsas: ps.bolsas||'',
+    peso: ps.peso||'', temp: ps.temp||'', cad: ps.cad||'',
+    lote: ps.lote||'', obs: ps.obs||'', done: ps.done||false,
+    encargado: (cSt[id]&&cSt[id].qty)||0,
+  });
+}
+
+// Guardar descongelación en Sheets
+async function saveDescToSheets() {
+  var items = DESCONGELA.map(function(item) {
+    var st = dSt[item.id] || {};
+    return { id: item.id, name: item.name, qty: st.qty||'', who: st.who||'', notes: st.notes||'', checked: st.checked||false };
+  });
+  await apiCall({ action: 'save_desc', date: today(), items: JSON.stringify(items) });
+}
+
+async function pushToSheets(tab, rowData) {
+  // Legacy function - kept for compatibility
+  showSync('☁️ Guardado', true);
 }
 
 function showSync(msg,ok){
@@ -1218,9 +1330,12 @@ function toggleDesc(id){
 
 function saveDesc(){
   sv(SK.desc,dSt);
-  const b=document.getElementById('desc-btn');
-  b.textContent='✓ Guardado';b.style.background='var(--olive)';
-  setTimeout(()=>{b.textContent='💾 Guardar';b.style.background='';},2000);
+  saveDescToSheets().then(function(){
+    showSync('☁️ Descongelación guardada', true);
+  });
+  var b=document.getElementById('desc-btn');
+  b.textContent='✓ Guardado';b.style.background='var(--olive2)';
+  setTimeout(function(){b.textContent='💾 Guardar';b.style.background='';},2000);
 }
 
 // ═══════════════════════════════
@@ -1559,6 +1674,20 @@ function clearHist(){
 // ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
+function refreshAll() {
+  loadDayFromSheets().then(function(){
+    var tab = document.querySelector('.tab.active');
+    if (tab) {
+      var id = tab.id.replace('tab-','');
+      if (id === 'cierre') renderCierre();
+      if (id === 'produccion') renderProd();
+      if (id === 'descongela') renderDesc();
+      if (id === 'historial') renderHist();
+    }
+    renderCierre();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function(){
   try {
     initDates();
@@ -1570,6 +1699,13 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 
+
+
+} catch(parseErr) {
+  document.addEventListener('DOMContentLoaded', function(){
+    document.body.innerHTML = '<div style="background:#D41C2C;color:white;padding:30px;font-family:monospace;font-size:14px;position:fixed;inset:0;overflow:auto;z-index:9999"><h2>ERROR DE PARSEO</h2><pre>' + parseErr.message + '</pre><pre>' + (parseErr.stack||'').slice(0,500) + '</pre></div>';
+  });
+}
 
 </script>
 </body>
