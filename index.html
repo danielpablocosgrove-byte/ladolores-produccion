@@ -411,6 +411,29 @@ body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;f
 </div>
 
 <script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 try {
 
 
@@ -423,6 +446,8 @@ try {
 // ═══════════════════════════════
 const API_URL='https://script.google.com/macros/s/AKfycbzc2tfZ97aIb3i4pXEz7DLnSxzD8M55oxUoHuVSrrPFb2yDpit6FlvQc5Edfge0AKMu/exec';
 const TEAM=['Daniel','Raquel','Yaneth','Nour','Manu','Lamiae','Valentina','Nieves','Fany'];
+function teamOptions(sel) { var o='<option value="">—</option>'; for(var ti=0;ti<TEAM.length;ti++){ o+='<option value="'+TEAM[ti]+'"'+(sel===TEAM[ti]?' selected':'')+'>'+TEAM[ti]+'</option>'; } return o; }
+
 
 // ═══════════════════════════════
 // CATÁLOGO
@@ -1140,7 +1165,7 @@ function showSync(msg,ok){
   bar.textContent=msg;
   bar.style.background=ok?'var(--olive)':'var(--rust)';
   bar.style.display='block';
-  setTimeout(()=>{bar.style.display='none';},3000);
+  setTimeout(function(){bar.style.display='none';},3000);
 }
 
 // ═══════════════════════════════
@@ -1158,8 +1183,8 @@ function toggleSec(el){el.parentElement.classList.toggle('col');}
 // TABS
 // ═══════════════════════════════
 function showTab(n){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
   document.getElementById('tab-'+n).classList.add('active');
   document.getElementById('page-'+n).classList.add('active');
   if(n==='produccion'){renderProd();}
@@ -1173,11 +1198,21 @@ function showTab(n){
 // WHO
 // ═══════════════════════════════
 function renderWho(){
-  document.getElementById('who-chips').innerHTML=
-    TEAM.map(n=>`<div class="chip${activeWho===n?' sel':''}" onclick="selWho('${n}')">${n}</div>`).join('');
-  // populate add manual who
-  const amWho=document.getElementById('am-who');
-  if(amWho){amWho.innerHTML='<option value="">— seleccionar —</option>'+TEAM.map(n=>`<option value="${n}">${n}</option>`).join('');}
+  var chipsHtml = '';
+  for(var wi=0;wi<TEAM.length;wi++){
+    var wn=TEAM[wi];
+    var wsel=activeWho===wn?' sel':'';
+    chipsHtml += '<div class="chip'+wsel+'" onclick="selWho(\'"+wn+"\')">'+wn+'</div>';
+  }
+  document.getElementById('who-chips').innerHTML = chipsHtml;
+  var amWho=document.getElementById('am-who');
+  if(amWho){
+    var whoOpts='<option value="">— seleccionar —</option>';
+    for(var wi2=0;wi2<TEAM.length;wi2++){
+      whoOpts+='<option value="'+TEAM[wi2]+'">'+TEAM[wi2]+'</option>';
+    }
+    amWho.innerHTML=whoOpts;
+  }
 }
 function selWho(n){
   activeWho=activeWho===n?'':n;
@@ -1200,8 +1235,8 @@ function initDates(){
 // ═══════════════════════════════
 function renderCierre(){
   const con=document.getElementById('cierre-secs');con.innerHTML='';
-  CATALOG.forEach(sec=>{
-    const filled=sec.items.filter(i=>cSt[i.id]&&cSt[i.id].qty>0).length;
+  CATALOG.forEach(function(sec){
+    const filled=sec.items.filter(function(i){ return cSt[i.id]&&cSt[i.id].qty>0; }).length;
     const card=document.createElement('div');card.className='sc';
     card.innerHTML=`
       <div class="sch" onclick="toggleSec(this)">
@@ -1209,12 +1244,12 @@ function renderCierre(){
         <span class="sb${filled===sec.items.length&&filled>0?' full':''}">${filled}/${sec.items.length}</span>
         <span class="schev">▾</span>
       </div>
-      <div class="scb">${sec.items.map(item=>{
+      <div class="scb">${sec.items.map(function(item){
         const st=cSt[item.id]||{};
         return`<div class="ci-item">
           <div>
             <div class="ci-name">${freqTag(item.freq)}${item.name}</div>
-            ${item.weight?`<div class="ci-det" style="color:var(--amber)">Bolsa: ${item.weight}g${item.uds?' · '+item.uds+' uds':''}</div>`:''}
+            '+(item.weight?'<div class="ci-det" style="color:var(--amber)">Bolsa: '+item.weight+'g'+(item.uds?' · '+item.uds+' uds':'')+'</div>':'')+'
           </div>
           <div class="ci-right">
             <div class="ci-ql">Recetas</div>
@@ -1226,7 +1261,7 @@ function renderCierre(){
           <span class="ci-who-lbl">Anota:</span>
           <select class="inp" style="width:auto;font-size:9px;padding:3px 6px;" id="cwho-${item.id}" onchange="updCierre('${item.id}')">
             <option value="">—</option>
-            ${TEAM.map(n=>`<option value="${n}"${st.who===n?' selected':''}>${n}</option>`).join('')}
+            ${teamOptions(st.who||'')}
           </select>
         </div>
         <div class="ci-note-row">
@@ -1250,15 +1285,10 @@ function updCierre(id){
 
 function saveCierre(){
   sv(SK.cierre,cSt);
-  Object.entries(cSt).forEach(([id,val])=>{
-    if(val.qty>0){
-      const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
-      pushToSheets('cierre',{date:today(),name:(item&&item.name||id),qty:val.qty,who:val.who||activeWho,notes:val.notes});
-    }
-  });
+  Object.keys(cSt).forEach(function(id){ var val=cSt[id]; if(val.qty>0){ var item=CATALOG.reduce(function(a,s){return a.concat(s.items);},[]).filter(function(i){ return i.id===id; })[0]; pushToSheets('cierre',{date:today(),name:(item&&item.name||id),qty:val.qty,who:val.who||activeWho,notes:val.notes}); } });
   const b=document.getElementById('cierre-btn');
   b.textContent='✓ Guardado';b.style.background='var(--olive)';
-  setTimeout(()=>{b.textContent='💾 Guardar orden';b.style.background='';},2000);
+  setTimeout(function(){b.textContent='💾 Guardar orden';b.style.background='';},2000);
 }
 
 // ═══════════════════════════════
@@ -1266,7 +1296,7 @@ function saveCierre(){
 // ═══════════════════════════════
 function renderDesc(){
   const con=document.getElementById('desc-secs');con.innerHTML='';
-  const checked=DESCONGELA.filter(i=>dSt[i.id]&&dSt[i.id].checked).length;
+  const checked=DESCONGELA.filter(function(i){ return dSt[i.id]&&dSt[i.id].checked ; }).length;
   const pct=DESCONGELA.length?Math.round(checked/DESCONGELA.length*100):0;
   document.getElementById('desc-pb').style.width=pct+'%';
   document.getElementById('desc-pc').textContent=`${checked} / ${DESCONGELA.length}`;
@@ -1277,7 +1307,7 @@ function renderDesc(){
       <span class="sb ice">${checked}/${DESCONGELA.length}</span>
       <span class="schev">▾</span>
     </div>
-    <div class="scb">${DESCONGELA.map(item=>{
+    <div class="scb">${DESCONGELA.map(function(item){
       const st=dSt[item.id]||{};
       return`<div class="di" id="di-${item.id}">
         <div>
@@ -1294,7 +1324,7 @@ function renderDesc(){
         <span class="di-ql">Anota:</span>
         <select class="inp" style="width:auto;font-size:9px;padding:3px 6px;" id="dwho-${item.id}" onchange="updDesc('${item.id}')">
           <option value="">—</option>
-          ${TEAM.map(n=>`<option value="${n}"${st.who===n?' selected':''}>${n}</option>`).join('')}
+          ${teamOptions(st.who||'')}
         </select>
       </div>
       <div class="di-note-row">
@@ -1320,7 +1350,7 @@ function toggleDesc(id){
   dSt[id]={...dSt[id],checked:on,checkedAt:on?new Date().toISOString():null};
   sv(SK.desc,dSt);
   if(on){
-    const item=DESCONGELA.find(i=>i.id===id);
+    const item=DESCONGELA.find(function(i){ return i.id===id; });
     const record={date:today(),itemId:id,name:(item&&item.name||id),...dSt[id]};
     dHist.push(record);sv(SK.dhist,dHist);
     pushToSheets('descongelacion',record);
@@ -1350,16 +1380,16 @@ function renderProd(){
   const con=document.getElementById('prod-secs');con.innerHTML='';
   let totReq=0,totDone=0;
 
-  CATALOG.forEach(sec=>{
+  CATALOG.forEach(function(sec){
     // Filter items by search
-    const visibleItems=sec.items.filter(i=>{
+    const visibleItems=sec.items.filter(function(i){
       if(!searchQ) return true;
       return i.name.toLowerCase().includes(searchQ);
     });
     if(!visibleItems.length) return;
 
-    const reqItems=sec.items.filter(i=>((cSt[i.id]&&cSt[i.id].qty)||0)>0);
-    const doneInSec=reqItems.filter(i=>pSt[i.id]&&pSt[i.id].done).length;
+    const reqItems=sec.items.filter(function(i){ return ((cSt[i.id]&&cSt[i.id].qty)||0)>0; });
+    const doneInSec=reqItems.filter(function(i){ return pSt[i.id]&&pSt[i.id].done ; }).length;
     totReq+=reqItems.length;totDone+=doneInSec;
 
     const card=document.createElement('div');card.className='sc';
@@ -1369,7 +1399,7 @@ function renderProd(){
         <span class="sb${doneInSec===reqItems.length&&reqItems.length>0?' full':''}">${doneInSec}/${reqItems.length}</span>
         <span class="schev">▾</span>
       </div>
-      <div class="scb">${visibleItems.map(item=>{
+      <div class="scb">${visibleItems.map(function(item){
         const cs=cSt[item.id]||{},ps=pSt[item.id]||{};
         const req=cs.qty||0,isDone=!!ps.done;
         const highlight=searchQ&&item.name.toLowerCase().includes(searchQ);
@@ -1379,7 +1409,7 @@ function renderProd(){
             <div class="pi-name">${item.name}</div>
             <span class="pi-enc${!req?' z':''}">${req?req+' receta'+(req>1?'s':''):'Sin encargar'}</span>
           </div>
-          ${cs.notes?`<div class="note-banner">📝 ${cs.notes}${cs.who?' · '+cs.who:''}</div>`:''}
+          '+(cs.notes?'<div class="note-banner">📝 '+cs.notes+(cs.who?' · '+cs.who:'')+'</div>':'')+'
           <div class="pi-fields">
             <div class="pf"><label>Recetas elaboradas</label>
               <input class="inp" type="number" min="0" id="pr-rec-${item.id}" value="${ps.recetas||''}" placeholder="0" oninput="updProd('${item.id}')"></div>
@@ -1396,7 +1426,7 @@ function renderProd(){
             <div class="pf"><label>Elaborado por</label>
               <select class="inp" id="pr-who-${item.id}" onchange="updProd('${item.id}')">
                 <option value="">—</option>
-                ${TEAM.map(n=>`<option value="${n}"${(ps.who||activeWho)===n?' selected':''}>${n}</option>`).join('')}
+                ${teamOptions(ps.who||activeWho||'')}
               </select></div>
             <div class="pf wide"><label>Observaciones</label>
               <textarea class="inp ta" id="pr-obs-${item.id}" placeholder="Variaciones, incidencias…" rows="2"
@@ -1406,7 +1436,7 @@ function renderProd(){
             <button class="btn bprint bsm" onclick="openLbl('${item.id}')">🖨 Etiqueta</button>
             <button class="btn bdone bsm${isDone?' isdone':''}" onclick="toggleDone('${item.id}')">
               ${isDone?'✓ Completado':'Marcar completo'}</button>
-            ${isDone?`<span class="done-stamp">✓ ${fmtD(((ps.doneAt||'').slice(0,10)))} · ${ps.who||'—'}</span>`:''}
+            '+(isDone?'<span class="done-stamp">✓ '+fmtD((ps.doneAt||'00').slice(0,10))+' · '+(ps.who||'—')+'</span>':'')+'
           </div>
         </div>`;
       }).join('')}</div>`;
@@ -1438,8 +1468,8 @@ function toggleDone(id){
   pSt[id]={...pSt[id],done:isDone,doneAt:isDone?new Date().toISOString():null};
   sv(SK.prod,pSt);
   if(isDone){
-    const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
-    const sec=CATALOG.find(s=>s.items.some(i=>i.id===id));
+    const item=CATALOG.reduce(function(a,s){return a.concat(s.items);},[]).find(function(i){ return i.id===id; });
+    const sec=CATALOG.filter(function(s){ return s.items.some(function(i){ return i.id===id; }); })[0];
     const record={date:today(),itemId:id,name:(item&&item.name||id),section:(sec&&sec.title)||'',
       encargado:(cSt[id]&&cSt[id].qty)||0,notas_cierre:(cSt[id]&&cSt[id].notes)||'',quien_cierre:(cSt[id]&&cSt[id].who)||'',...pSt[id]};
     hist.push(record);sv(SK.hist,hist);
@@ -1475,35 +1505,44 @@ function saveManual(){
 // FICHAS TÉCNICAS
 // ═══════════════════════════════
 function renderFichas(){
-  const grid=document.getElementById('fichas-grid');
-  grid.innerHTML=FICHAS.map(f=>`
-    <div class="ficha-card" onclick="expandFicha('${f.id}')">
-      <div class="ficha-card-head">
-        <span class="ficha-icon">${f.icon}</span>
-        <span class="ficha-name">${f.name}</span>
-        <span class="ficha-badge">${f.category}</span>
-      </div>
-      <div class="ficha-body" id="ficha-body-${f.id}">
-        <div class="ficha-section">
-          <div class="ficha-section-title">Ingredientes</div>
-          ${f.ingredientes.map(i=>`<div class="ficha-ing-row"><span class="ficha-ing-name">${i.name}</span><span class="ficha-ing-qty">${i.qty}</span></div>`).join('')}
-        </div>
-        <div class="ficha-section">
-          <div class="ficha-section-title">Elaboración</div>
-          ${f.pasos.map((p,i)=>`<div class="ficha-step"><span class="ficha-step-num">${i+1}.</span><span>${p}</span></div>`).join('')}
-        </div>
-        ${f.rendimiento?`<div class="ficha-section"><div class="ficha-section-title">Rendimiento</div><div style="font-size:11px">${f.rendimiento}</div></div>`:''}
-        ${f.conservacion?`<div class="ficha-section"><div class="ficha-section-title">Conservación</div><div style="font-size:11px">${f.conservacion}</div></div>`:''}
-        <div><span class="ficha-allergen">⚠ ${f.allergens||'Sin alérgenos principales'}</span></div>
-        ${f.pdf?`<div><a class="ficha-pdf-link" onclick="openPDF('${f.pdf}','${f.name}');event.stopPropagation()">📄 Ver PDF completo</a></div>`:''}
-      </div>
-    </div>`).join('');
+  var grid=document.getElementById('fichas-grid');
+  var html = '';
+  FICHAS.forEach(function(f){
+    var ingHtml = '';
+    f.ingredientes.forEach(function(i){
+      ingHtml += '<div class="ficha-ing-row"><span class="ficha-ing-name">'+i.name+'</span><span class="ficha-ing-qty">'+i.qty+'</span></div>';
+    });
+    var pasosHtml = '';
+    f.pasos.forEach(function(p, idx){
+      pasosHtml += '<div class="ficha-step"><span class="ficha-step-num">'+(idx+1)+'.</span><span>'+p+'</span></div>';
+    });
+    var extra = '';
+    if(f.rendimiento) extra += '<div class="ficha-section"><div class="ficha-section-title">Rendimiento</div><div style="font-size:11px">'+f.rendimiento+'</div></div>';
+    if(f.conservacion) extra += '<div class="ficha-section"><div class="ficha-section-title">Conservación</div><div style="font-size:11px">'+f.conservacion+'</div></div>';
+    var pdfBtn = '';
+    if(f.pdf) {
+      var fIdx = FICHAS.indexOf(f);
+      pdfBtn = '<div><button class="ficha-pdf-link" onclick="openFichaPDF(' + fIdx + ')">📄 Ver PDF completo</button></div>';
+    }
+    var allergenHtml = '<div><span class="ficha-allergen">⚠ '+(f.allergens||'Sin alérgenos')+' </span></div>';
+    html += '<div class="ficha-card">';
+    html += '<div class="ficha-card-head"><span class="ficha-icon">'+f.icon+'</span><span class="ficha-name">'+f.name+'</span><span class="ficha-badge">'+f.category+'</span></div>';
+    html += '<div class="ficha-body">';
+    html += '<div class="ficha-section"><div class="ficha-section-title">Ingredientes</div>'+ingHtml+'</div>';
+    html += '<div class="ficha-section"><div class="ficha-section-title">Elaboración</div>'+pasosHtml+'</div>';
+    html += extra + allergenHtml + pdfBtn;
+    html += '</div></div>';
+  });
+  grid.innerHTML = html;
 }
-
 function expandFicha(id){
   // already expanded by default – cards are always open
 }
 
+function openFichaPDF(idx){
+  var f = FICHAS[idx];
+  if(f && f.pdf) openPDF(f.pdf, f.name);
+}
 function openPDF(file,title){
   document.getElementById('pdf-modal-title').textContent=title;
   document.getElementById('pdf-frame').src=file;
@@ -1518,134 +1557,72 @@ function closePDF(){
 // TABLA DE PESOS
 // ═══════════════════════════════
 function renderPesos(){
-  const wrap=document.getElementById('pesos-wrap');
-  const itemsWithWeight=[];
-  CATALOG.forEach(sec=>{
-    const wItems=sec.items.filter(i=>i.weight);
-    if(wItems.length) itemsWithWeight.push({sec,items:wItems});
+  var wrap=document.getElementById('pesos-wrap');
+  var itemsWithWeight=[];
+  CATALOG.forEach(function(sec){
+    var wItems=sec.items.filter(function(i){return i.weight;});
+    if(wItems.length) itemsWithWeight.push({sec:sec,items:wItems});
   });
-  wrap.innerHTML=`
-    <table class="pesos-table">
-      <thead><tr>
-        <th>Elaboración</th>
-        <th>Peso/bolsa</th>
-        <th>Uds/bolsa</th>
-        <th>Peso/ud</th>
-        <th>Sección</th>
-        <th>Alérgenos</th>
-      </tr></thead>
-      <tbody>
-        ${itemsWithWeight.map(({sec,items})=>`
-          <tr class="pesos-section-row"><td colspan="6">${sec.icon} ${sec.title}</td></tr>
-          ${items.map(i=>`<tr>
-            <td>${i.name}</td>
-            <td class="pesos-val">${i.weight?i.weight+' g':'—'}</td>
-            <td class="pesos-uds">${i.uds||'—'}</td>
-            <td class="pesos-val">${i.udsW?i.udsW+' g':i.weight&&i.uds?Math.round(i.weight/i.uds)+' g':'—'}</td>
-            <td style="color:var(--muted)">${sec.title}</td>
-            <td style="color:var(--rust2);font-size:9px">${i.allergens||'—'}</td>
-          </tr>`).join('')}
-        `).join('')}
-      </tbody>
-    </table>`;
+  var rows = '';
+  itemsWithWeight.forEach(function(sw){
+    var sec = sw.sec;
+    rows += '<tr class="pesos-section-row"><td colspan="6">'+sec.icon+' '+sec.title+'</td></tr>';
+    sw.items.forEach(function(i){
+      var pesoUd = i.udsW ? i.udsW+'g' : (i.weight&&i.uds ? Math.round(i.weight/i.uds)+'g' : '—');
+      rows += '<tr>';
+      rows += '<td>'+i.name+'</td>';
+      rows += '<td class="pesos-val">'+(i.weight?i.weight+' g':'—')+'</td>';
+      rows += '<td class="pesos-uds">'+(i.uds||'—')+'</td>';
+      rows += '<td class="pesos-val">'+pesoUd+'</td>';
+      rows += '<td style="color:var(--muted)">'+sec.title+'</td>';
+      rows += '<td style="color:var(--rust2);font-size:9px">'+(i.allergens||'—')+'</td>';
+      rows += '</tr>';
+    });
+  });
+  wrap.innerHTML = '<table class="pesos-table"><thead><tr><th>Elaboración</th><th>Peso/bolsa</th><th>Uds/bolsa</th><th>Peso/ud</th><th>Sección</th><th>Alérgenos</th></tr></thead><tbody>'+rows+'</tbody></table>';
 }
-
-// ═══════════════════════════════
-// LABEL
-// ═══════════════════════════════
-let lblItem=null;
-function openLbl(id){
-  updProd(id);lblItem=id;
-  const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
-  const ps=pSt[id]||{};
-  document.getElementById('lprev').innerHTML=`
-    <div class="lp" id="lp-print">
-      <div class="lp-logo">★ LA DOLORES · Vermutería</div>
-      <div class="lp-prod">${item.name}</div>
-      <div class="lp-row"><span>Elaboración:</span><span>${fmtD(today())}</span></div>
-      <div class="lp-row"><span>Caducidad:</span><span><strong>${fmtD(ps.cad||cadDef(item.freq))}</strong></span></div>
-      <div class="lp-row"><span>Lote:</span><span>${ps.lote||loteDef(id)}</span></div>
-      ${ps.bolsas?`<div class="lp-row"><span>Bolsas:</span><span>${ps.bolsas}</span></div>`:''}
-      ${ps.peso?`<div class="lp-row"><span>Peso:</span><span>${ps.peso} kg</span></div>`:''}
-      ${ps.who?`<div class="lp-row"><span>Elaborado por:</span><span>${ps.who}</span></div>`:''}
-      ${ps.temp?`<div class="lp-row"><span>Temp. central:</span><span>${ps.temp}°C</span></div>`:''}
-      <div class="lp-al">⚠ Alérgenos: ${item.allergens||'Ver ficha técnica'}</div>
-      <div class="lp-foot">Conservar 0–4°C · Consumir antes de la fecha indicada</div>
-    </div>`;
-  document.getElementById('lmod').classList.add('open');
-}
-function closeLbl(){document.getElementById('lmod').classList.remove('open');}
-function printLbl(){
-  const c=document.getElementById('lp-print').outerHTML;
-  const w=window.open('','_blank','width=380,height=340');
-  w.document.write(`<!DOCTYPE html><html><head>
-    <style>
-      @page{size:62mm 87mm;margin:2mm;}
-      body{margin:0;background:white;font-family:monospace;}
-      .lp{background:white;color:#111;padding:6px 8px;width:58mm;font-size:8.5pt;}
-      .lp-logo{font-size:11pt;font-weight:700;border-bottom:2px solid #111;margin-bottom:4px;padding-bottom:2px;}
-      .lp-prod{font-size:10.5pt;font-weight:700;margin:4px 0 3px;text-transform:uppercase;}
-      .lp-row{display:flex;justify-content:space-between;font-size:8pt;margin:1.5px 0;}
-      .lp-al{font-size:7pt;color:#444;margin-top:4px;border-top:1px solid #ccc;padding-top:3px;}
-      .lp-foot{font-size:6.5pt;color:#666;margin-top:2px;}
-    </style></head><body>${c}
-    <script>window.onload=()=>{window.print();setTimeout(()=>window.close(),500)}<\/script>
-    </body></html>`);
-  w.document.close();
-}
-
-// ═══════════════════════════════
-// HISTORIAL
-// ═══════════════════════════════
-function switchHTab(t){
-  hTab=t;
-  document.getElementById('htab-prod').classList.toggle('on',t==='prod');
-  document.getElementById('htab-desc').classList.toggle('on',t==='desc');
-  renderHist();
-}
-function filterHist(){renderHist();}
 function renderHist(){
   const from=(document.getElementById('hfrom')||{}).value;
   const to=(document.getElementById('hto')||{}).value;
   let data=hTab==='prod'?[...hist]:[...dHist];
-  if(from) data=data.filter(r=>r.date>=from);
-  if(to)   data=data.filter(r=>r.date<=to);
+  if(from) data=data.filter(function(r){ return r.date>=from; });
+  if(to)   data=data.filter(function(r){ return r.date<=to; });
   const w=document.getElementById('htw');
   if(!data.length){w.innerHTML='<div class="hempty">SIN REGISTROS</div>';return;}
   if(hTab==='prod'){
-    w.innerHTML=`<table class="ht"><thead><tr>
-      <th>Fecha</th><th>Sección</th><th>Elaboración</th><th>Encarg.</th>
-      <th>Recetas</th><th>Bolsas</th><th>Peso</th><th>Cad.</th>
-      <th>Lote</th><th>Temp</th><th>Por</th><th>Obs.</th>
-    </tr></thead><tbody>
-      ${[...data].reverse().map(r=>`<tr>
-        <td>${fmtD(r.date)}</td><td>${r.section||''}</td><td>${r.name}</td>
-        <td style="color:var(--amber)">${r.encargado||0}</td>
-        <td>${r.recetas||'–'}</td><td>${r.bolsas||'–'}</td><td>${r.peso||'–'}</td>
-        <td>${fmtD(r.cad)||'–'}</td><td>${r.lote||'–'}</td>
-        <td>${r.temp?r.temp+'°C':'–'}</td><td>${r.who||'–'}</td>
-        <td style="max-width:100px;white-space:normal">${r.obs||'–'}</td>
-      </tr>`).join('')}
-    </tbody></table>`;
+    var prodRows = '';
+    var prodData = data.slice().reverse();
+    prodData.forEach(function(r){
+      prodRows += '<tr>';
+      prodRows += '<td>'+fmtD(r.date)+'</td><td>'+(r.section||'')+'</td><td>'+r.name+'</td>';
+      prodRows += '<td style="color:var(--amber)">'+(r.encargado||0)+'</td>';
+      prodRows += '<td>'+(r.recetas||'–')+'</td><td>'+(r.bolsas||'–')+'</td><td>'+(r.peso||'–')+'</td>';
+      prodRows += '<td>'+(fmtD(r.cad)||'–')+'</td><td>'+(r.lote||'–')+'</td>';
+      prodRows += '<td>'+(r.temp?r.temp+'°C':'–')+'</td><td>'+(r.who||'–')+'</td>';
+      prodRows += '<td style="max-width:100px;white-space:normal">'+(r.obs||'–')+'</td>';
+      prodRows += '</tr>';
+    });
+    w.innerHTML = '<table class="ht"><thead><tr><th>Fecha</th><th>Sección</th><th>Elaboración</th><th>Encarg.</th><th>Recetas</th><th>Bolsas</th><th>Peso</th><th>Cad.</th><th>Lote</th><th>Temp</th><th>Por</th><th>Obs.</th></tr></thead><tbody>'+prodRows+'</tbody></table>';
   } else {
-    w.innerHTML=`<table class="ht"><thead><tr>
-      <th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Quién</th><th>Notas</th>
-    </tr></thead><tbody>
-      ${[...data].reverse().map(r=>`<tr>
-        <td>${fmtD(r.date)}</td><td>${r.name}</td>
-        <td style="color:var(--ice3)">${r.qty||'–'}</td>
-        <td>${r.who||'–'}</td>
-        <td style="max-width:140px;white-space:normal">${r.notes||'–'}</td>
-      </tr>`).join('')}
-    </tbody></table>`;
+    var descRows = '';
+    var descData = data.slice().reverse();
+    descData.forEach(function(r){
+      descRows += '<tr>';
+      descRows += '<td>'+fmtD(r.date)+'</td><td>'+r.name+'</td>';
+      descRows += '<td style="color:var(--ice3)">'+(r.qty||'–')+'</td>';
+      descRows += '<td>'+(r.who||'–')+'</td>';
+      descRows += '<td style="max-width:140px;white-space:normal">'+(r.notes||'–')+'</td>';
+      descRows += '</tr>';
+    });
+    w.innerHTML = '<table class="ht"><thead><tr><th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Quién</th><th>Notas</th></tr></thead><tbody>'+descRows+'</tbody></table>';
   }
 }
 function exportCSV(){
   const from=(document.getElementById('hfrom')||{}).value;
   const to=(document.getElementById('hto')||{}).value;
   let data=hTab==='prod'?[...hist]:[...dHist];
-  if(from) data=data.filter(r=>r.date>=from);
-  if(to)   data=data.filter(r=>r.date<=to);
+  if(from) data=data.filter(function(r){ return r.date>=from; });
+  if(to)   data=data.filter(function(r){ return r.date<=to; });
   let csv='';
   if(hTab==='prod'){
     csv=['Fecha,Seccion,Elaboracion,Encargado,Recetas,Bolsas,Peso_kg,Caducidad,Lote,Temp_C,Elaborado_por,Notas_cierre,Observaciones',
@@ -1706,6 +1683,29 @@ document.addEventListener('DOMContentLoaded', function(){
     document.body.innerHTML = '<div style="background:#D41C2C;color:white;padding:30px;font-family:monospace;font-size:14px;position:fixed;inset:0;overflow:auto;z-index:9999"><h2>ERROR DE PARSEO</h2><pre>' + parseErr.message + '</pre><pre>' + (parseErr.stack||'').slice(0,500) + '</pre></div>';
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 </body>
