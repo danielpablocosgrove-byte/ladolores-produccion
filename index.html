@@ -441,6 +441,8 @@ body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;f
 
 
 
+
+
 try {
 
 
@@ -451,15 +453,15 @@ try {
 // ═══════════════════════════════
 // CONFIG
 // ═══════════════════════════════
-const API_URL='https://script.google.com/macros/s/AKfycbzc2tfZ97aIb3i4pXEz7DLnSxzD8M55oxUoHuVSrrPFb2yDpit6FlvQc5Edfge0AKMu/exec';
-const TEAM=['Daniel','Raquel','Yaneth','Nour','Manu','Lamiae','Valentina','Nieves','Fany'];
+var API_URL='https://script.google.com/macros/s/AKfycbzc2tfZ97aIb3i4pXEz7DLnSxzD8M55oxUoHuVSrrPFb2yDpit6FlvQc5Edfge0AKMu/exec';
+var TEAM=['Daniel','Raquel','Yaneth','Nour','Manu','Lamiae','Valentina','Nieves','Fany'];
 function teamOptions(sel) { var o='<option value="">—</option>'; for(var ti=0;ti<TEAM.length;ti++){ o+='<option value="'+TEAM[ti]+'"'+(sel===TEAM[ti]?' selected':'')+'>'+TEAM[ti]+'</option>'; } return o; }
 
 
 // ═══════════════════════════════
 // CATÁLOGO
 // ═══════════════════════════════
-const CATALOG=[
+var CATALOG=[
   {id:'gildas',icon:'🍢',title:'Gildas',items:[
     {id:'gi_anchoa',    name:'Gilda anchoa y piparra',         freq:'d',allergens:'Pescado'},
     {id:'gi_idiazabal', name:'Gilda Idiazabal y membrillo',    freq:'d',allergens:'Pescado, Leche'},
@@ -570,7 +572,7 @@ const CATALOG=[
   ]},
 ];
 
-const DESCONGELA=[
+var DESCONGELA=[
   {id:'desc_bacalao', name:'Bacalao',               detail:'En cámara 0–4°C · mín. 24h'},
   {id:'desc_gamba',   name:'Cola gamba langostinera',detail:'En cámara · usar en 24h'},
   {id:'desc_calamar', name:'Calamar',               detail:'En cámara'},
@@ -594,20 +596,25 @@ var FICHAS=[];
 // ═══════════════════════════════
 // STORAGE & STATE
 // ═══════════════════════════════
-const SK={cierre:'ld_c4',desc:'ld_d4',prod:'ld_p4',hist:'ld_h4',dhist:'ld_dh4',who:'ld_w4'};
+var SK={cierre:'ld_c4',desc:'ld_d4',prod:'ld_p4',hist:'ld_h4',dhist:'ld_dh4',who:'ld_w4'};
 function ld(k){try{return JSON.parse(localStorage.getItem(k))||{};}catch{return{};}}
 function la(k){try{return JSON.parse(localStorage.getItem(k))||[];}catch{return[];}}
 function sv(k,v){localStorage.setItem(k,JSON.stringify(v));}
 
-let cSt=ld(SK.cierre),dSt=ld(SK.desc),pSt=ld(SK.prod);
-let hist=la(SK.hist),dHist=la(SK.dhist);
-let hTab='prod',activeWho='',searchQ='';
+var cSt=ld(SK.cierre);
+var dSt=ld(SK.desc);
+var pSt=ld(SK.prod);
+var hist=la(SK.hist);
+var dHist=la(SK.dhist);
+var hTab='prod';
+var activeWho='';
+var searchQ='';
 activeWho=localStorage.getItem(SK.who)||'';
 
 // ═══════════════════════════════
 // SYNC CON GOOGLE SHEETS
 // ═══════════════════════════════
-var syncing = false;
+var syncing= false;
 
 async function apiCall(payload) {
   try {
@@ -1245,6 +1252,8 @@ document.addEventListener('DOMContentLoaded', function(){
     document.body.innerHTML = '<div style="background:#D41C2C;color:white;padding:30px;font-family:monospace;font-size:13px;position:fixed;inset:0;overflow:auto;z-index:9999">' + parseErr.message + ' ' + (parseErr.stack||'').slice(0,400) + '</div>';
   });
 }
+
+
 
 
 
