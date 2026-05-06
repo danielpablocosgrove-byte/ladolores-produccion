@@ -414,39 +414,6 @@ body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;f
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-try {
-
-
 // ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
@@ -1269,45 +1236,23 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 
-} catch(parseErr) {
-  document.addEventListener('DOMContentLoaded', function(){
-    document.body.style.background = '#1A0A0A';
-    document.body.innerHTML = '<div style="background:#D41C2C;color:white;padding:30px;font-family:monospace;font-size:13px;position:fixed;inset:0;overflow:auto;z-index:9999">' + parseErr.message + ' ' + (parseErr.stack||'').slice(0,400) + '</div>';
-  });
-}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// ═══ INIT ═══
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    initDates();
+    renderWho();
+    renderCierre();
+    loadDayFromSheets().then(function(){
+      renderCierre();
+      renderWho();
+    });
+  } catch(e) {
+    var msg = e.message || String(e);
+    document.body.innerHTML += '<div style="position:fixed;bottom:0;left:0;right:0;background:#D41C2C;color:white;padding:15px;font-family:monospace;font-size:12px;z-index:9999">' + msg + '</div>';
+  }
+});
 
 </script>
 </body>
