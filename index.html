@@ -443,6 +443,7 @@ body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;f
 
 
 
+
 try {
 
 
@@ -629,15 +630,37 @@ async function apiCall(payload) {
   }
 }
 
-async function apiGet(params) {
-  try {
+function apiGet(params) {
+  return new Promise(function(resolve) {
+    var cbName = 'cb_' + Date.now();
     var qs = Object.keys(params).map(function(k){ return k+'='+encodeURIComponent(params[k]); }).join('&');
-    var res = await fetch(API_URL + '?' + qs + '&cb=' + Date.now());
-    var data = await res.json();
-    return data;
-  } catch(e) {
-    return { ok: false, error: e.message };
-  }
+    var url = API_URL + '?' + qs + '&callback=' + cbName + '&cb=' + Date.now();
+    
+    window[cbName] = function(data) {
+      delete window[cbName];
+      var s = document.getElementById(cbName);
+      if(s) s.parentNode.removeChild(s);
+      resolve(data);
+    };
+    
+    var script = document.createElement('script');
+    script.id = cbName;
+    script.src = url;
+    script.onerror = function() {
+      delete window[cbName];
+      script.parentNode.removeChild(script);
+      resolve({ ok: false, error: 'Network error' });
+    };
+    document.head.appendChild(script);
+    
+    // Timeout after 8 seconds
+    setTimeout(function() {
+      if(window[cbName]) {
+        delete window[cbName];
+        resolve({ ok: false, error: 'Timeout' });
+      }
+    }, 8000);
+  });
 }
 
 function showSync(msg, ok) {
@@ -1252,6 +1275,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.body.innerHTML = '<div style="background:#D41C2C;color:white;padding:30px;font-family:monospace;font-size:13px;position:fixed;inset:0;overflow:auto;z-index:9999">' + parseErr.message + ' ' + (parseErr.stack||'').slice(0,400) + '</div>';
   });
 }
+
 
 
 
