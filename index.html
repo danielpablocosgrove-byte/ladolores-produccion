@@ -259,11 +259,10 @@ color:var(–muted);cursor:pointer;border-bottom:3px solid transparent;transitio
 </div>
 
 <script>
+const API_URL='https://script.google.com/macros/s/AKfycbxVuQATBxpy5FeTpqxrVi88zwykOBsrbhGp7_Q1vsUa7h19A0CjxAO9eJ89y7sI209X/exec';
 
-var API_URL='https://script.google.com/macros/s/AKfycbzc2tfZ97aIb3i4pXEz7DLnSxzD8M55oxUoHuVSrrPFb2yDpit6FlvQc5Edfge0AKMu/exec';
-
-var TEAM=['Daniel','Raquel','Yaneth','Nour','Manu','Lamiae','Valentina','Nieves','Fany'];
-var activeWho='';
+const TEAM=['Daniel','Raquel','Yaneth','Nour','Manu','Lamiae','Valentina','Nieves','Fany'];
+let activeWho='';
 
 // ── SYNC con Google Sheets ──
 async function pushToSheets(tab, rowData){
@@ -276,7 +275,7 @@ async function pushToSheets(tab, rowData){
 }
 
 async function syncIndicator(msg, ok){
-  var bar = document.getElementById('sync-bar');
+  const bar = document.getElementById('sync-bar');
   if(!bar) return;
   bar.textContent = ok ? '☁️ '+msg : '⚠️ '+msg;
   bar.style.background = ok ? 'var(--olive)' : 'var(--rust)';
@@ -284,7 +283,7 @@ async function syncIndicator(msg, ok){
   setTimeout(()=>{ bar.style.display='none'; }, 3000);
 }
 
-var CATALOG=[
+const CATALOG=[
   {id:'gildas',icon:'🍢',title:'Gildas',items:[
     {id:'gi_anchoa',    name:'Gilda anchoa y piparra',           freq:'d',allergens:'Pescado'},
     {id:'gi_idiazabal', name:'Gilda Idiazabal y membrillo',      freq:'d',allergens:'Pescado, Leche'},
@@ -395,7 +394,7 @@ var CATALOG=[
   ]},
 ];
 
-var DESCONGELA=[
+const DESCONGELA=[
   {id:'desc_bacalao', name:'Bacalao',               detail:'En cámara 0–4°C · mín. 24h'},
   {id:'desc_gamba',   name:'Cola gamba langostinera',detail:'En cámara · usar en 24h'},
   {id:'desc_calamar', name:'Calamar',               detail:'En cámara'},
@@ -412,14 +411,14 @@ var DESCONGELA=[
   {id:'desc_fingers', name:'Fingers',               detail:'En cámara · usar en 24h'},
 ];
 
-var SK={cierre:'ld_c3',desc:'ld_d3',prod:'ld_p3',hist:'ld_h3',dhist:'ld_dh3',who:'ld_w3'};
+const SK={cierre:'ld_c3',desc:'ld_d3',prod:'ld_p3',hist:'ld_h3',dhist:'ld_dh3',who:'ld_w3'};
 function ld(k){try{return JSON.parse(localStorage.getItem(k))||{};}catch{return{};}}
 function la(k){try{return JSON.parse(localStorage.getItem(k))||[];}catch{return[];}}
 function sv(k,v){localStorage.setItem(k,JSON.stringify(v));}
 
-var cSt=ld(SK.cierre),dSt=ld(SK.desc),pSt=ld(SK.prod);
-var hist=la(SK.hist),dHist=la(SK.dhist);
-var hTab='prod';
+let cSt=ld(SK.cierre),dSt=ld(SK.desc),pSt=ld(SK.prod);
+let hist=la(SK.hist),dHist=la(SK.dhist);
+let hTab='prod';
 activeWho=localStorage.getItem(SK.who)||'';
 
 function renderWho(){
@@ -433,11 +432,11 @@ function selWho(n){
 }
 
 function today(){return new Date().toISOString().slice(0,10);}
-function fmtD(d){if(!d)return'';var[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`;}
-function cadDef(freq){var days={s:7,d:2,sv:1}[freq]||5;var d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10);}
+function fmtD(d){if(!d)return'';const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`;}
+function cadDef(freq){const days={s:7,d:2,sv:1}[freq]||5;const d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10);}
 function loteDef(id){return'LD'+today().replace(/-/g,'')+'-'+id.toUpperCase().slice(0,4);}
 function longDate(d){return d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});}
-function freqTag(f){var m={s:['tgs','Semanal'],d:['tgd','Diario'],sv:['tgsv','Servicio']};var[c,l]=m[f]||['tgd',''];return`<span class="tag ${c}">${l}</span>`;}
+function freqTag(f){const m={s:['tgs','Semanal'],d:['tgd','Diario'],sv:['tgsv','Servicio']};const[c,l]=m[f]||['tgd',''];return`<span class="tag ${c}">${l}</span>`;}
 function toggleSec(el){el.parentElement.classList.toggle('col');}
 
 function showTab(n){
@@ -451,7 +450,7 @@ function showTab(n){
 }
 
 function initDates(){
-  var now=new Date(),tom=new Date();tom.setDate(tom.getDate()+1);
+  const now=new Date(),tom=new Date();tom.setDate(tom.getDate()+1);
   document.getElementById('cierre-date').textContent='Para mañana · '+longDate(tom);
   document.getElementById('desc-date').textContent='Sacar esta noche → '+longDate(tom);
   document.getElementById('prod-date').textContent='Hoy · '+longDate(now);
@@ -459,10 +458,10 @@ function initDates(){
 
 // ── CIERRE ──
 function renderCierre(){
-  var con=document.getElementById('cierre-secs');con.innerHTML='';
+  const con=document.getElementById('cierre-secs');con.innerHTML='';
   CATALOG.forEach(sec=>{
-    var filled=sec.items.filter(i=>cSt[i.id]?.qty>0).length;
-    var card=document.createElement('div');card.className='sc';
+    const filled=sec.items.filter(i=>cSt[i.id]?.qty>0).length;
+    const card=document.createElement('div');card.className='sc';
     card.innerHTML=`
       <div class="sch" onclick="toggleSec(this)">
         <span class="si">${sec.icon}</span><span class="st">${sec.title}</span>
@@ -470,7 +469,7 @@ function renderCierre(){
         <span class="schev">▾</span>
       </div>
       <div class="scb">${sec.items.map(item=>{
-        var st=cSt[item.id]||{};
+        const st=cSt[item.id]||{};
         return`<div class="ci-item">
           <div>
             <div class="ci-name">${freqTag(item.freq)}${item.name}</div>
@@ -502,11 +501,11 @@ con.appendChild(card);
 });
 }
 function updCierre(id){
-var qty=parseInt(document.getElementById(‘cq-’+id)?.value)||0;
-var notes=document.getElementById(‘cnotes-’+id)?.value||’’;
-var who=document.getElementById(‘cwho-’+id)?.value||’’;
+const qty=parseInt(document.getElementById(‘cq-’+id)?.value)||0;
+const notes=document.getElementById(‘cnotes-’+id)?.value||’’;
+const who=document.getElementById(‘cwho-’+id)?.value||’’;
 cSt[id]={qty,notes,who};
-var el=document.getElementById(‘cq-’+id);
+const el=document.getElementById(‘cq-’+id);
 if(el)el.className=‘inp qi’+(qty>0?’ hv’:’’);
 sv(SK.cierre,cSt);
 }
@@ -516,11 +515,11 @@ saveCierreToSheets();
 // Push all encargos with qty > 0 to sheets
 Object.entries(cSt).forEach(([id, val])=>{
 if(val.qty>0){
-var item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
+const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
 pushToSheets(‘cierre’,{date:today(),name:item?.name||id,qty:val.qty,who:val.who,notes:val.notes});
 }
 });
-var b=document.getElementById(‘cierre-btn’);
+const b=document.getElementById(‘cierre-btn’);
 b.textContent=‘✓ Guardado’;b.style.background=‘var(–olive)’;
 syncIndicator(‘Orden guardada en Google Sheets’,true);
 setTimeout(()=>{b.textContent=‘💾 Guardar orden’;b.style.background=’’;},2000);
@@ -528,13 +527,13 @@ setTimeout(()=>{b.textContent=‘💾 Guardar orden’;b.style.background=’’
 
 // ── DESCONGELACIÓN ──
 function renderDesc(){
-var con=document.getElementById(‘desc-secs’);con.innerHTML=’’;
-var checked=DESCONGELA.filter(i=>dSt[i.id]?.checked).length;
-var pct=DESCONGELA.length?Math.round(checked/DESCONGELA.length*100):0;
+const con=document.getElementById(‘desc-secs’);con.innerHTML=’’;
+const checked=DESCONGELA.filter(i=>dSt[i.id]?.checked).length;
+const pct=DESCONGELA.length?Math.round(checked/DESCONGELA.length*100):0;
 document.getElementById(‘desc-pb’).style.width=pct+’%’;
 document.getElementById(‘desc-pc’).textContent=`${checked} / ${DESCONGELA.length}`;
-var card=document.createElement(‘div’);card.className=‘sc’;
-card.innerHTML=` <div class="sch" onclick="toggleSec(this)"> <span class="si">🧊</span><span class="st">Productos a descongelar</span> <span class="sb ice">${checked}/${DESCONGELA.length}</span> <span class="schev">▾</span> </div> <div class="scb">${DESCONGELA.map(item=>{ var st=dSt[item.id]||{}; return`<div class="di" id="di-${item.id}">
+const card=document.createElement(‘div’);card.className=‘sc’;
+card.innerHTML=` <div class="sch" onclick="toggleSec(this)"> <span class="si">🧊</span><span class="st">Productos a descongelar</span> <span class="sb ice">${checked}/${DESCONGELA.length}</span> <span class="schev">▾</span> </div> <div class="scb">${DESCONGELA.map(item=>{ const st=dSt[item.id]||{}; return`<div class="di" id="di-${item.id}">
 <div>
 <div class="di-name" style="${st.checked?'opacity:.4;text-decoration:line-through':''}">${item.name}</div>
 <div class="di-det">${item.detail}</div>
@@ -559,20 +558,20 @@ oninput="updDesc('${item.id}')">${st.notes||’’}</textarea>
 con.appendChild(card);
 }
 function updDesc(id){
-var qty=document.getElementById(‘dqty-’+id)?.value||’’;
-var notes=document.getElementById(‘dnotes-’+id)?.value||’’;
-var who=document.getElementById(‘dwho-’+id)?.value||’’;
+const qty=document.getElementById(‘dqty-’+id)?.value||’’;
+const notes=document.getElementById(‘dnotes-’+id)?.value||’’;
+const who=document.getElementById(‘dwho-’+id)?.value||’’;
 dSt[id]={…(dSt[id]||{}),qty,notes,who};
 sv(SK.desc,dSt);
 }
 function toggleDesc(id){
 updDesc(id);
-var on=!dSt[id]?.checked;
+const on=!dSt[id]?.checked;
 dSt[id]={…dSt[id],checked:on,checkedAt:on?new Date().toISOString():null};
 sv(SK.desc,dSt);
 if(on){
-var item=DESCONGELA.find(i=>i.id===id);
-var record={date:today(),itemId:id,name:item?.name||id,…dSt[id]};
+const item=DESCONGELA.find(i=>i.id===id);
+const record={date:today(),itemId:id,name:item?.name||id,…dSt[id]};
 dHist.push(record);
 sv(SK.dhist,dHist);
 pushToSheets(‘descongelacion’, record).then(()=>syncIndicator(‘Guardado en Google Sheets’,true)).catch(()=>syncIndicator(‘Error de conexión — guardado local’,false));
@@ -581,21 +580,21 @@ renderDesc();
 }
 function saveDesc(){
 sv(SK.desc,dSt);
-var b=document.getElementById(‘desc-btn’);
+const b=document.getElementById(‘desc-btn’);
 b.textContent=‘✓ Guardado’;b.style.background=‘var(–olive)’;
 setTimeout(()=>{b.textContent=‘💾 Guardar’;b.style.background=’’;},2000);
 }
 
 // ── PRODUCCIÓN ──
 function renderProd(){
-var con=document.getElementById(‘prod-secs’);con.innerHTML=’’;
-var totReq=0,totDone=0;
+const con=document.getElementById(‘prod-secs’);con.innerHTML=’’;
+let totReq=0,totDone=0;
 CATALOG.forEach(sec=>{
-var reqItems=sec.items.filter(i=>(cSt[i.id]?.qty||0)>0);
-var doneInSec=reqItems.filter(i=>pSt[i.id]?.done).length;
+const reqItems=sec.items.filter(i=>(cSt[i.id]?.qty||0)>0);
+const doneInSec=reqItems.filter(i=>pSt[i.id]?.done).length;
 totReq+=reqItems.length;totDone+=doneInSec;
-var card=document.createElement(‘div’);card.className=‘sc’;
-card.innerHTML=` <div class="sch" onclick="toggleSec(this)"> <span class="si">${sec.icon}</span><span class="st">${sec.title}</span> <span class="sb${doneInSec===reqItems.length&&reqItems.length>0?' full':''}">${doneInSec}/${reqItems.length}</span> <span class="schev">▾</span> </div> <div class="scb">${sec.items.map(item=>{ var cs=cSt[item.id]||{},ps=pSt[item.id]||{}; var req=cs.qty||0,isDone=!!ps.done; return`<div class="pi${!req?' dim':''}${isDone?' donebg':''}" id="pi-${item.id}">
+const card=document.createElement(‘div’);card.className=‘sc’;
+card.innerHTML=` <div class="sch" onclick="toggleSec(this)"> <span class="si">${sec.icon}</span><span class="st">${sec.title}</span> <span class="sb${doneInSec===reqItems.length&&reqItems.length>0?' full':''}">${doneInSec}/${reqItems.length}</span> <span class="schev">▾</span> </div> <div class="scb">${sec.items.map(item=>{ const cs=cSt[item.id]||{},ps=pSt[item.id]||{}; const req=cs.qty||0,isDone=!!ps.done; return`<div class="pi${!req?' dim':''}${isDone?' donebg':''}" id="pi-${item.id}">
 <div class="pi-head">
 <div class="pdot${isDone?' done':req>0?' enc':''}"></div>
 <div class="pi-name">${item.name}</div>
@@ -633,7 +632,7 @@ ${isDone?`<span class="done-stamp">✓ ${fmtD(ps.doneAt?.slice(0,10))} · ${ps.w
 </div>`; }).join('')}</div>`;
 con.appendChild(card);
 });
-var pct=totReq>0?Math.round(totDone/totReq*100):0;
+const pct=totReq>0?Math.round(totDone/totReq*100):0;
 document.getElementById(‘prod-pb’).style.width=pct+’%’;
 document.getElementById(‘prod-pc’).textContent=`${totDone} / ${totReq} completados`;
 }
@@ -652,13 +651,13 @@ sv(SK.prod,pSt);
 }
 function toggleDone(id){
 updProd(id);
-var isDone=!pSt[id]?.done;
+const isDone=!pSt[id]?.done;
 pSt[id]={…pSt[id],done:isDone,doneAt:isDone?new Date().toISOString():null};
 sv(SK.prod,pSt);
 if(isDone){
-var item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
-var sec=CATALOG.find(s=>s.items.some(i=>i.id===id));
-var record={date:today(),itemId:id,name:item?.name||id,section:sec?.title||’’,
+const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
+const sec=CATALOG.find(s=>s.items.some(i=>i.id===id));
+const record={date:today(),itemId:id,name:item?.name||id,section:sec?.title||’’,
 encargado:cSt[id]?.qty||0,notas_cierre:cSt[id]?.notes||’’,quien_cierre:cSt[id]?.who||’’,…pSt[id]};
 hist.push(record);
 sv(SK.hist,hist);
@@ -668,18 +667,18 @@ renderProd();
 }
 
 // ── LABEL ──
-var lblItem=null;
+let lblItem=null;
 function openLbl(id){
 updProd(id);lblItem=id;
-var item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
-var ps=pSt[id]||{};
+const item=CATALOG.flatMap(s=>s.items).find(i=>i.id===id);
+const ps=pSt[id]||{};
 document.getElementById(‘lprev’).innerHTML=` <div class="lp" id="lp-print"> <div class="lp-logo">★ LA DOLORES · Vermutería</div> <div class="lp-prod">${item.name}</div> <div class="lp-row"><span>Elaboración:</span><span>${fmtD(today())}</span></div> <div class="lp-row"><span>Caducidad:</span><span><strong>${fmtD(ps.cad||cadDef(item.freq))}</strong></span></div> <div class="lp-row"><span>Lote:</span><span>${ps.lote||loteDef(id)}</span></div> ${ps.bolsas?`<div class="lp-row"><span>Bolsas:</span><span>${ps.bolsas}</span></div>`:''} ${ps.peso?`<div class="lp-row"><span>Peso:</span><span>${ps.peso} kg</span></div>`:''} ${ps.who?`<div class="lp-row"><span>Elaborado por:</span><span>${ps.who}</span></div>`:''} ${ps.temp?`<div class="lp-row"><span>Temp. central:</span><span>${ps.temp}°C</span></div>`:''} <div class="lp-al">⚠ Alérgenos: ${item.allergens||'Ver ficha técnica'}</div> <div class="lp-foot">Conservar 0–4°C · Consumir antes de la fecha indicada</div> </div>`;
 document.getElementById(‘lmod’).classList.add(‘open’);
 }
 function closeLbl(){document.getElementById(‘lmod’).classList.remove(‘open’);lblItem=null;}
 function printLbl(){
-var c=document.getElementById(‘lp-print’).outerHTML;
-var w=window.open(’’,’_blank’,‘width=380,height=340’);
+const c=document.getElementById(‘lp-print’).outerHTML;
+const w=window.open(’’,’_blank’,‘width=380,height=340’);
 w.document.write(`<!DOCTYPE html><html><head> <style> @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Cormorant+Garamond:wght@700&display=swap'); @page{size:62mm 87mm;margin:2mm;} body{margin:0;background:white;} .lp{font-family:'DM Mono',monospace;background:white;color:#111;padding:6px 8px;width:58mm;font-size:8.5pt;} .lp-logo{font-family:'Cormorant Garamond',serif;font-size:11pt;font-weight:700;border-bottom:2px solid #111;margin-bottom:4px;padding-bottom:2px;} .lp-prod{font-size:10.5pt;font-weight:700;margin:4px 0 3px;text-transform:uppercase;} .lp-row{display:flex;justify-content:space-between;font-size:8pt;margin:1.5px 0;} .lp-al{font-size:7pt;color:#444;margin-top:4px;border-top:1px solid #ccc;padding-top:3px;} .lp-foot{font-size:6.5pt;color:#666;margin-top:2px;} </style></head><body>${c} <script>window.onload=()=>{window.print();setTimeout(()=>window.close(),500)}<\/script> </body></html>`);
 w.document.close();
 }
@@ -692,12 +691,12 @@ document.getElementById(‘htab-desc’).classList.toggle(‘on’,t===‘desc�
 renderHist();
 }
 function renderHist(){
-var from=document.getElementById(‘hfrom’)?.value;
-var to=document.getElementById(‘hto’)?.value;
-var data=hTab===‘prod’?[…hist]:[…dHist];
+const from=document.getElementById(‘hfrom’)?.value;
+const to=document.getElementById(‘hto’)?.value;
+let data=hTab===‘prod’?[…hist]:[…dHist];
 if(from) data=data.filter(r=>r.date>=from);
 if(to)   data=data.filter(r=>r.date<=to);
-var w=document.getElementById(‘htw’);
+const w=document.getElementById(‘htw’);
 if(!data.length){w.innerHTML=’<div class="hempty">SIN REGISTROS</div>’;return;}
 if(hTab===‘prod’){
 w.innerHTML=`<table class="ht"><thead><tr> <th>Fecha</th><th>Sección</th><th>Elaboración</th><th>Encargado</th> <th>Recetas</th><th>Bolsas</th><th>Peso kg</th><th>Caducidad</th> <th>Lote</th><th>Temp</th><th>Por</th><th>Notas cierre</th><th>Obs.</th> </tr></thead><tbody> ${[...data].reverse().map(r=>`<tr>
@@ -720,12 +719,12 @@ w.innerHTML=`<table class="ht"><thead><tr> <th>Fecha</th><th>Producto</th><th>Ca
 }
 function filterHist(){renderHist();}
 function exportCSV(){
-var from=document.getElementById(‘hfrom’)?.value;
-var to=document.getElementById(‘hto’)?.value;
-var data=hTab===‘prod’?[…hist]:[…dHist];
+const from=document.getElementById(‘hfrom’)?.value;
+const to=document.getElementById(‘hto’)?.value;
+let data=hTab===‘prod’?[…hist]:[…dHist];
 if(from) data=data.filter(r=>r.date>=from);
 if(to)   data=data.filter(r=>r.date<=to);
-var csv=’’;
+let csv=’’;
 if(hTab===‘prod’){
 csv=[‘Fecha,Seccion,Elaboracion,Encargado,Recetas,Bolsas,Peso_kg,Caducidad,Lote,Temp_C,Elaborado_por,Notas_cierre,Quien_cierre,Observaciones’,
 …data.map(r=>[r.date,`"${r.section||''}"`,`"${r.name}"`,r.encargado,r.recetas||’’,r.bolsas||’’,r.peso||’’,r.cad||’’,r.lote||’’,r.temp||’’,r.who||’’,`"${(r.notas_cierre||'').replace(/"/g,"'")}"`,r.quien_cierre||’’,`"${(r.obs||'').replace(/"/g,"'")}"`].join(’,’))
@@ -735,180 +734,97 @@ csv=[‘Fecha,Producto,Cantidad,Quien,Notas’,
 …data.map(r=>[r.date,`"${r.name}"`,r.qty||’’,r.who||’’,`"${(r.notes||'').replace(/"/g,"'")}"`].join(’,’))
 ].join(’\n’);
 }
-var blob=new Blob([’\uFEFF’+csv],{type:‘text/csv;charset=utf-8;’});
-var a=document.createElement(‘a’);
+const blob=new Blob([’\uFEFF’+csv],{type:‘text/csv;charset=utf-8;’});
+const a=document.createElement(‘a’);
 a.href=URL.createObjectURL(blob);
 a.download=`la_dolores_${hTab}_${today()}.csv`;a.click();
 }
 function clearHist(){
-var label=hTab===‘prod’?‘el historial de producción’:‘el historial de descongelación’;
+const label=hTab===‘prod’?‘el historial de producción’:‘el historial de descongelación’;
 if(!confirm(`¿Borrar ${label}? No se puede deshacer.`))return;
 if(hTab===‘prod’){hist=[];sv(SK.hist,hist);}
 else{dHist=[];sv(SK.dhist,dHist);}
 renderHist();
 }
 
-// ═══════════════════════════════
-// SYNC CON SUPABASE
-// ═══════════════════════════════
+// SUPABASE SYNC
 var SB_URL = ‘https://ztxehzckcygudfpnqccs.supabase.co/rest/v1’;
 var SB_KEY = ‘eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp0eGVoemNrY3lndWRmcG5xY2NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMzYxOTksImV4cCI6MjA5MzcxMjE5OX0.5ozFI1VQR-CxnEzPVt12ND6i3lEimBoljo0KrV0aSNM’;
-var syncing = false;
+var _syncing = false;
 
 function showSync(msg, ok) {
-var bar = document.getElementById(‘sync-bar’);
-if (!bar) {
-bar = document.createElement(‘div’);
-bar.id = ‘sync-bar’;
-bar.style.cssText = ‘position:fixed;bottom:0;left:0;right:0;z-index:999;padding:8px 16px;text-align:center;font-family:monospace;font-size:11px;letter-spacing:1px;color:white;display:none;’;
-document.body.appendChild(bar);
-}
+var bar = document.getElementById(“sync-bar”);
+if (!bar) { bar = document.createElement(“div”); bar.id = “sync-bar”; bar.style.cssText = “position:fixed;bottom:0;left:0;right:0;z-index:999;padding:8px 16px;text-align:center;font-family:monospace;font-size:11px;color:white;display:none;”; document.body.appendChild(bar); }
 bar.textContent = msg;
-bar.style.background = ok ? ‘#1A1A2E’ : ‘#8B2E0F’;
-bar.style.display = ‘block’;
-setTimeout(function(){ bar.style.display = ‘none’; }, 3000);
+bar.style.background = ok ? “#1A1A2E” : “#8B2E0F”;
+bar.style.display = “block”;
+setTimeout(function(){ bar.style.display = “none”; }, 3000);
 }
 
-function sbHeaders() {
-return {
-‘apikey’: SB_KEY,
-‘Authorization’: ’Bearer ’ + SB_KEY,
-‘Content-Type’: ‘application/json’,
-‘Prefer’: ‘return=minimal’
-};
-}
+function sbH() { return {“apikey”:SB_KEY,“Authorization”:“Bearer “+SB_KEY,“Content-Type”:“application/json”,“Prefer”:“return=minimal”}; }
 
-function sbGet(table, filter) {
-var url = SB_URL + ‘/’ + table + ‘?’ + filter;
-return fetch(url, {method:‘GET’, headers: sbHeaders()})
+function sbGet(t, f) {
+return fetch(SB_URL+”/”+t+”?”+f, {method:“GET”, headers:sbH()})
 .then(function(r){ return r.json(); })
-.catch(function(e){ console.log(‘sbGet error:’, e); return []; });
+.catch(function(){ return []; });
 }
 
-function sbUpsert(table, data) {
-var url = SB_URL + ‘/’ + table;
-var headers = sbHeaders();
-headers[‘Prefer’] = ‘resolution=merge-duplicates,return=minimal’;
-return fetch(url, {
-method: ‘POST’,
-headers: headers,
-body: JSON.stringify(data)
-})
-.then(function(r){ return {ok: r.ok}; })
-.catch(function(e){ return {ok: false}; });
+function sbUpsert(t, rows) {
+var h = sbH(); h[“Prefer”] = “resolution=merge-duplicates,return=minimal”;
+return fetch(SB_URL+”/”+t, {method:“POST”, headers:h, body:JSON.stringify(rows)})
+.then(function(r){ return {ok:r.ok}; })
+.catch(function(){ return {ok:false}; });
 }
 
-function sbDelete(table, filter) {
-var url = SB_URL + ‘/’ + table + ‘?’ + filter;
-return fetch(url, {method:‘DELETE’, headers: sbHeaders()})
-.catch(function(){});
-}
+function sbDel(t, f) { return fetch(SB_URL+”/”+t+”?”+f, {method:“DELETE”, headers:sbH()}).catch(function(){}); }
 
 function refreshAll() {
-loadDayFromSheets().then(function(){
-renderCierre();
-renderWho();
-var activeTab = document.querySelector(’.tab.active’);
-if (activeTab) {
-var id = activeTab.id.replace(‘tab-’,’’);
-if(id===‘produccion’) renderProd();
-if(id===‘descongela’) renderDesc();
-if(id===‘historial’) renderHist();
-}
+loadFromSheets().then(function(){
+renderCierre(); renderWho();
+var at = document.querySelector(”.tab.active”);
+if(at){ var id=at.id.replace(“tab-”,””); if(id===“produccion”) renderProd(); if(id===“descongela”) renderDesc(); if(id===“historial”) renderHist(); }
 });
 }
 
-function loadDayFromSheets() {
-if (syncing) return Promise.resolve();
-syncing = true;
-showSync(‘🔄 Sincronizando…’, true);
+function loadFromSheets() {
+if(_syncing) return Promise.resolve();
+_syncing = true;
+showSync(“🔄 Sincronizando…”, true);
 var d = today();
-
-return sbGet(‘cierre_estado’, ‘fecha=eq.’ + d + ‘&select=item_id,qty,who,notes’)
+return sbGet(“cierre_estado”,“fecha=eq.”+d+”&select=item_id,qty,who,notes”)
 .then(function(rows){
-if(rows && rows.length > 0){
-rows.forEach(function(row){
-if(row.item_id){
-cSt[row.item_id] = {qty:parseInt(row.qty)||0, who:row.who||’’, notes:row.notes||’’};
-}
-});
-sv(SK.cierre, cSt);
-}
-return sbGet(‘prod_estado’, ‘fecha=eq.’ + d + ‘&select=item_id,who,recetas,bolsas,peso,temp,cad,lote,obs,done’);
+if(rows && rows.length>0) rows.forEach(function(row){ if(row.item_id) cSt[row.item_id]={qty:parseInt(row.qty)||0,who:row.who||””,notes:row.notes||””}; });
+sv(SK.cierre,cSt);
+return sbGet(“prod_estado”,“fecha=eq.”+d+”&select=item_id,who,recetas,bolsas,peso,temp,cad,lote,obs,done”);
 })
 .then(function(rows){
-if(rows && rows.length > 0){
-rows.forEach(function(row){
-if(row.item_id){
-pSt[row.item_id] = {
-who:row.who||’’, recetas:row.recetas||’’, bolsas:row.bolsas||’’,
-peso:row.peso||’’, temp:row.temp||’’, cad:row.cad||’’,
-lote:row.lote||’’, obs:row.obs||’’,
-done:row.done===true||row.done===‘true’
-};
-}
-});
-sv(SK.prod, pSt);
-}
-showSync(‘✓ Sincronizado’, true);
-syncing = false;
+if(rows && rows.length>0) rows.forEach(function(row){ if(row.item_id) pSt[row.item_id]={who:row.who||””,recetas:row.recetas||””,bolsas:row.bolsas||””,peso:row.peso||””,temp:row.temp||””,cad:row.cad||””,lote:row.lote||””,obs:row.obs||””,done:row.done===true||row.done===“true”}; });
+sv(SK.prod,pSt);
+showSync(“✓ Sincronizado”,true); _syncing=false;
 })
-.catch(function(e){
-console.log(‘Sync error:’, e);
-showSync(‘⚠️ Sin conexión — datos locales’, false);
-syncing = false;
-});
+.catch(function(){ showSync(“⚠️ Datos locales”,false); _syncing=false; });
 }
 
 function saveCierreToSheets() {
-var d = today();
-var rows = [];
-Object.keys(cSt).forEach(function(id){
-var val = cSt[id];
-if(val && val.qty > 0){
-var allItems = CATALOG.reduce(function(a,s){return a.concat(s.items);},[]);
-var item = allItems.filter(function(i){return i.id===id;})[0];
-rows.push({fecha:d, item_id:id, name:item?item.name:id, qty:val.qty, who:val.who||’’, notes:val.notes||’’});
-}
-});
-// Delete today’s cierre and re-insert
-return sbDelete(‘cierre_estado’, ‘fecha=eq.’+d)
-.then(function(){
-if(rows.length > 0) return sbUpsert(‘cierre_estado’, rows);
-})
-.then(function(){ showSync(‘☁️ Orden guardada’, true); })
-.catch(function(){ showSync(‘⚠️ Error al guardar’, false); });
+var d=today(), rows=[], allItems=CATALOG.reduce(function(a,s){return a.concat(s.items);}, []);
+Object.keys(cSt).forEach(function(id){ var val=cSt[id]; if(val&&val.qty>0){ var item=allItems.filter(function(i){return i.id===id;})[0]; rows.push({fecha:d,item_id:id,name:item?item.name:id,qty:val.qty,who:val.who||””,notes:val.notes||””}); } });
+return sbDel(“cierre_estado”,“fecha=eq.”+d).then(function(){ return rows.length>0?sbUpsert(“cierre_estado”,rows):null; }).then(function(){showSync(“☁️ Orden guardada”,true);}).catch(function(){showSync(“⚠️ Error”,false);});
 }
 
-function saveProdItemToSheets(id) {
-var ps = pSt[id] || {};
-var allItems = CATALOG.reduce(function(a,s){return a.concat(s.items);},[]);
-var item = allItems.filter(function(i){return i.id===id;})[0];
-var sec = CATALOG.filter(function(s){return s.items.some(function(i){return i.id===id;});})[0];
-var row = {
-fecha:today(), item_id:id, name:item?item.name:id,
-section:sec?sec.title:’’, who:ps.who||’’,
-recetas:ps.recetas||’’, bolsas:ps.bolsas||’’,
-peso:ps.peso||’’, temp:ps.temp||’’, cad:ps.cad||’’,
-lote:ps.lote||’’, obs:ps.obs||’’, done:ps.done||false,
-encargado:(cSt[id]&&cSt[id].qty)||0
-};
-return sbUpsert(‘prod_estado’, [row])
-.then(function(){
-if(ps.done){
-// Also log to produccion history
-return sbUpsert(‘produccion’, [row]);
-}
-})
-.catch(function(){});
+function saveProdToSheets(id) {
+var ps=pSt[id]||{}, allItems=CATALOG.reduce(function(a,s){return a.concat(s.items);},[]);
+var item=allItems.filter(function(i){return i.id===id;})[0];
+var sec=CATALOG.filter(function(s){return s.items.some(function(i){return i.id===id;});})[0];
+var row={fecha:today(),item_id:id,name:item?item.name:id,section:sec?sec.title:””,who:ps.who||””,recetas:ps.recetas||””,bolsas:ps.bolsas||””,peso:ps.peso||””,temp:ps.temp||””,cad:ps.cad||””,lote:ps.lote||””,obs:ps.obs||””,done:ps.done||false,encargado:(cSt[id]&&cSt[id].qty)||0};
+return sbUpsert(“prod_estado”,[row]).catch(function(){});
 }
 
 // ── INIT ──
 initDates();
 renderWho();
 renderCierre();
-loadDayFromSheets().then(function(){ renderCierre(); renderWho(); });
-
+loadFromSheets().then(function(){renderCierre();renderWho();});
 </script>
+
 </body>
 </html>
